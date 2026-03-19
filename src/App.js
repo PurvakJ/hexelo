@@ -1,4 +1,4 @@
-// Alternative App.js structure with separate ScrollToTop component
+// App.js (updated with logo before HEXELO)
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, NavLink, useLocation } from 'react-router-dom';
 import './App.css';
@@ -6,6 +6,7 @@ import Home from './components/Home';
 import About from './components/About';
 import Product from './components/Product';
 import Contact from './components/Contact';
+import Catalog from './components/Catalog';
 import Loader from './components/Loader';
 import ScrollToTop from './components/ScrollToTop';
 
@@ -90,12 +91,19 @@ function AppContent() {
         onClick={() => setSidebarOpen(false)}
       />
 
-      {/* Sidebar */}
+      {/* Sidebar - Cleaner design with logo */}
       <aside className={`sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="sidebar-content">
-          <div className="logo">
-            <h1>HEXELO</h1>
-            <p className="logo-tagline">Hardware & Architectural Finishes</p>
+          <div className="logo-container">
+            <img 
+              src="https://i.postimg.cc/Njyq9QbM/Whats_App_Image_2026_03_19_at_12_33_09_removebg_preview.png" 
+              alt="Hexelo Logo" 
+              className="sidebar-logo"
+            />
+            <div className="logo-text">
+              <h1>HEXELO</h1>
+              <p className="logo-tagline">Hardware & Architectural Finishes</p>
+            </div>
           </div>
           
           <nav className="nav-menu">
@@ -124,7 +132,16 @@ function AppContent() {
                   className={({ isActive }) => isActive ? 'active' : ''}
                   onClick={() => isMobile && setSidebarOpen(false)}
                 >
-                  <span className="nav-text">Product</span>
+                  <span className="nav-text">Products</span>
+                </NavLink>
+              </li>
+              <li>
+                <NavLink 
+                  to="/catalog"
+                  className={({ isActive }) => isActive ? 'active' : ''}
+                  onClick={() => isMobile && setSidebarOpen(false)}
+                >
+                  <span className="nav-text">Catalog</span>
                 </NavLink>
               </li>
               <li>
@@ -141,7 +158,7 @@ function AppContent() {
           
           <div className="sidebar-footer">
             <div className="footer-text">
-              <p>Premium hardware solutions<br />for your dream spaces</p>
+              <p>Premium hardware solutions for your dream spaces</p>
             </div>
             <div className="footer-copyright">
               © 2026 HEXELO
@@ -155,6 +172,7 @@ function AppContent() {
           <Route path="/" element={<Home />} />
           <Route path="/about" element={<About />} />
           <Route path="/product" element={<Product />} />
+          <Route path="/catalog" element={<Catalog />} />
           <Route path="/contact" element={<Contact />} />
         </Routes>
       </main>

@@ -10,6 +10,7 @@ function Product() {
   const [sortBy, setSortBy] = useState('default');
   const [currentPage, setCurrentPage] = useState(1);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
   const productsPerPage = 20;
   
   // Check screen size for responsive filters
@@ -29,10 +30,12 @@ function Product() {
     return a.localeCompare(b);
   });
   
-  // Filter products by category only (no search filter on mobile)
+  // Filter products by category
   const filteredProducts = productsData.products.filter(p => {
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
-    return matchesCategory;
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         p.category.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesSearch;
   });
 
   // Sort products
@@ -107,6 +110,12 @@ function Product() {
     }
   };
 
+  // Get category count
+  const getCategoryCount = (category) => {
+    if (category === 'All') return productsData.products.length;
+    return productsData.products.filter(p => p.category === category).length;
+  };
+
   return (
     <div className="product-page">
       {/* Hero Section */}
@@ -162,12 +171,165 @@ function Product() {
         </div>
       </section>
 
+      {/* Mobile Filter Bar */}
+      {isMobile && (
+        <div className="mobile-filter-bar">
+          <div className="container">
+            <div className="mobile-filter-header">
+              <div className="filter-title">
+                <span className="filter-icon">🔍</span>
+                <span>Found {sortedProducts.length} products</span>
+              </div>
+              <button 
+                className={`filter-toggle-btn ${isFilterOpen ? 'active' : ''}`}
+                onClick={() => setIsFilterOpen(!isFilterOpen)}
+              >
+                <span className="filter-toggle-icon">⚡</span>
+                <span>{isFilterOpen ? 'Hide Filters' : 'Show Filters'}</span>
+              </button>
+            </div>
 
+            {/* Mobile Filter Dropdown */}
+            <div className={`mobile-filter-dropdown ${isFilterOpen ? 'open' : ''}`}>
+              {/* Category Dropdown */}
+              <div className="mobile-filter-group">
+                <label className="mobile-filter-label">
+                  <span className="label-icon">📁</span>
+                  Category
+                </label>
+                <select 
+                  className="mobile-category-select"
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                  {categories.map(category => (
+                    <option key={category} value={category}>
+                      {category} ({getCategoryCount(category)})
+                    </option>
+                  ))}
+                </select>
+              </div>
 
-      {/* Filters Section - Hidden on Mobile */}
+              {/* Sort Dropdown */}
+              <div className="mobile-filter-group">
+                <label className="mobile-filter-label">
+                  <span className="label-icon">🔄</span>
+                  Sort By
+                </label>
+                <select 
+                  className="mobile-sort-select"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="default">Default</option>
+                  <option value="name-asc">Name (A to Z)</option>
+                  <option value="name-desc">Name (Z to A)</option>
+                  <option value="category-asc">Category (A to Z)</option>
+                  <option value="category-desc">Category (Z to A)</option>
+                </select>
+              </div>
+
+              {/* Search Input */}
+              <div className="mobile-filter-group">
+                <label className="mobile-filter-label">
+                  <span className="label-icon">🔎</span>
+                  Search
+                </label>
+                <input
+                  type="text"
+                  className="mobile-search-input"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+
+              {/* Active Filters */}
+              {(selectedCategory !== 'All' || searchQuery || sortBy !== 'default') && (
+                <div className="active-filters">
+                  <span className="active-filters-label">Active filters:</span>
+                  <div className="filter-chips">
+                    {selectedCategory !== 'All' && (
+                      <span className="filter-chip">
+                        {selectedCategory}
+                        <button 
+                          className="remove-filter"
+                          onClick={() => setSelectedCategory('All')}
+                        >
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {searchQuery && (
+                      <span className="filter-chip">
+                        "{searchQuery}"
+                        <button 
+                          className="remove-filter"
+                          onClick={() => setSearchQuery('')}
+                        >
+                          ×
+                        </button>
+                      </span>
+                    )}
+                    {sortBy !== 'default' && (
+                      <span className="filter-chip">
+                        {sortBy.replace('-', ' ')}
+                        <button 
+                          className="remove-filter"
+                          onClick={() => setSortBy('default')}
+                        >
+                          ×
+                        </button>
+                      </span>
+                    )}
+                  </div>
+                  <button 
+                    className="clear-all-filters"
+                    onClick={() => {
+                      setSelectedCategory('All');
+                      setSearchQuery('');
+                      setSortBy('default');
+                    }}
+                  >
+                    Clear all
+                  </button>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Desktop Filters Section */}
       {!isMobile && (
         <section className="filters-section">
           <div className="container">
+            <div className="filters-wrapper">
+              <div className="search-box">
+                <span className="search-icon">🔍</span>
+                <input
+                  type="text"
+                  className="search-input"
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+              </div>
+              <div className="sort-box">
+                <select 
+                  className="sort-select"
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value)}
+                >
+                  <option value="default">Sort by: Default</option>
+                  <option value="name-asc">Name (A to Z)</option>
+                  <option value="name-desc">Name (Z to A)</option>
+                  <option value="category-asc">Category (A to Z)</option>
+                  <option value="category-desc">Category (Z to A)</option>
+                </select>
+              </div>
+            </div>
+
             <div className="categories-wrapper">
               <div className="categories-scroll">
                 {categories.map(category => (
@@ -308,7 +470,7 @@ function Product() {
       {/* Image Modal */}
       {selectedProduct && (
         <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+          <div className={`modal-content ${isMobile ? 'mobile-modal' : ''}`} onClick={(e) => e.stopPropagation()}>
             <button className="modal-close" onClick={closeModal}>×</button>
             
             <button className="modal-nav modal-prev" onClick={handlePrevious}>

@@ -1,545 +1,4 @@
-/* App.css */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
-  background-color: #ffffff;
-  color: #000000;
-  line-height: 1.6;
-}
-
-.app {
-  display: flex;
-  min-height: 100vh;
-}
-
-/* Sidebar - Vertical Navigation */
-.sidebar {
-  width: 280px;
-  background-color: #ffffff;
-  border-right: 1px solid rgba(0, 0, 0, 0.05);
-  position: fixed;
-  height: 100vh;
-  overflow-y: auto;
-  padding: 40px 30px;
-}
-
-.sidebar-content {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-}
-
-.logo h1 {
-  font-size: 28px;
-  font-weight: 600;
-  letter-spacing: 2px;
-  margin-bottom: 8px;
-  color: #000000;
-}
-
-.logo-tagline {
-  font-size: 12px;
-  color: #666;
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding-bottom: 30px;
-}
-
-.nav-menu {
-  flex: 1;
-  margin-top: 50px;
-}
-
-.nav-menu ul {
-  list-style: none;
-}
-
-.nav-menu li {
-  margin-bottom: 25px;
-}
-
-.nav-menu a {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
-  color: #000000;
-  transition: all 0.3s ease;
-}
-
-.nav-number {
-  font-size: 14px;
-  color: #947862;
-  margin-right: 15px;
-  font-weight: 300;
-  opacity: 0.7;
-  transition: opacity 0.3s ease;
-}
-
-.nav-text {
-  font-size: 16px;
-  font-weight: 500;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  position: relative;
-}
-
-.nav-text::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background-color: #947862;
-  transition: width 0.3s ease;
-}
-
-.nav-menu a:hover .nav-text::after,
-.nav-menu a.active .nav-text::after {
-  width: 100%;
-}
-
-.nav-menu a.active .nav-number {
-  opacity: 1;
-  font-weight: 500;
-}
-
-.sidebar-footer {
-  margin-top: auto;
-  padding-top: 40px;
-}
-
-.footer-text p {
-  font-size: 12px;
-  color: #666;
-  line-height: 1.6;
-  margin-bottom: 20px;
-}
-
-.footer-copyright {
-  font-size: 10px;
-  color: #999;
-  letter-spacing: 0.5px;
-}
-
-/* Main Content Area */
-.main-content {
-  flex: 1;
-  margin-left: 280px;
-  padding: 40px 50px;
-  background-color: #ffffff;
-  min-height: 100vh;
-}
-
-/* Page Container */
-.page-container {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-.page-title {
-  font-size: 42px;
-  font-weight: 400;
-  margin-bottom: 40px;
-  letter-spacing: -0.5px;
-  color: #000000;
-  position: relative;
-  padding-bottom: 20px;
-}
-
-.page-title::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 60px;
-  height: 2px;
-  background-color: #947862;
-}
-
-/* Home Page */
-.hero-section {
-  margin-bottom: 60px;
-}
-
-.hero-title {
-  font-size: 56px;
-  font-weight: 300;
-  line-height: 1.2;
-  margin-bottom: 30px;
-  max-width: 800px;
-}
-
-.hero-title span {
-  color: #947862;
-  font-weight: 400;
-}
-
-.hero-description {
-  font-size: 18px;
-  color: #666;
-  max-width: 600px;
-  margin-bottom: 40px;
-}
-
-.cta-button {
-  background-color: transparent;
-  border: 1px solid #000000;
-  color: #000000;
-  padding: 15px 40px;
-  font-size: 14px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  text-decoration: none;
-  display: inline-block;
-}
-
-.cta-button:hover {
-  background-color: #947862;
-  border-color: #947862;
-  color: #ffffff;
-}
-
-/* Featured Categories */
-.featured-categories {
-  margin-top: 80px;
-}
-
-.section-subtitle {
-  font-size: 14px;
-  color: #947862;
-  letter-spacing: 2px;
-  text-transform: uppercase;
-  margin-bottom: 20px;
-}
-
-.category-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-  margin-top: 30px;
-}
-
-.category-card {
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  padding: 30px;
-  transition: all 0.3s ease;
-}
-
-.category-card:hover {
-  border-color: #947862;
-  transform: translateY(-5px);
-}
-
-.category-icon {
-  font-size: 32px;
-  margin-bottom: 20px;
-  color: #947862;
-}
-
-.category-card h3 {
-  font-size: 18px;
-  font-weight: 500;
-  margin-bottom: 10px;
-}
-
-.category-card p {
-  font-size: 14px;
-  color: #666;
-}
-
-/* About Page */
-.about-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  margin-top: 40px;
-}
-
-.about-text h2 {
-  font-size: 28px;
-  font-weight: 400;
-  margin-bottom: 30px;
-  color: #947862;
-}
-
-.about-text p {
-  margin-bottom: 20px;
-  color: #444;
-  font-size: 16px;
-}
-
-.stats-container {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 30px;
-  margin-top: 40px;
-}
-
-.stat-item {
-  text-align: center;
-}
-
-.stat-number {
-  font-size: 42px;
-  font-weight: 300;
-  color: #947862;
-  margin-bottom: 10px;
-}
-
-.stat-label {
-  font-size: 14px;
-  color: #666;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.about-image {
-  background-color: #f8f8f8;
-  padding: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.about-image-placeholder {
-  width: 100%;
-  height: 400px;
-  background: linear-gradient(135deg, #f5f5f5 0%, #e0e0e0 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #666;
-}
-
-/* Product Page */
-.category-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 15px;
-  margin-bottom: 40px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.filter-btn {
-  background: none;
-  border: 1px solid transparent;
-  padding: 10px 20px;
-  font-size: 14px;
-  color: #666;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  border-radius: 0;
-}
-
-.filter-btn:hover {
-  color: #947862;
-}
-
-.filter-btn.active {
-  border-color: #947862;
-  color: #947862;
-}
-
-.products-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
-}
-
-.product-card {
-  border: 1px solid rgba(0, 0, 0, 0.05);
-  transition: all 0.3s ease;
-  background-color: #ffffff;
-}
-
-.product-card:hover {
-  border-color: #947862;
-  transform: translateY(-5px);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
-}
-
-.product-image {
-  width: 100%;
-  height: 250px;
-  overflow: hidden;
-  background-color: #f8f8f8;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.product-image img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  transition: transform 0.3s ease;
-}
-
-.product-card:hover .product-image img {
-  transform: scale(1.05);
-}
-
-.product-info {
-  padding: 20px;
-}
-
-.product-info h3 {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 8px;
-  color: #000000;
-}
-
-.product-category {
-  font-size: 12px;
-  color: #947862;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-/* Contact Page */
-.contact-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 60px;
-  margin-top: 40px;
-}
-
-.contact-info h2 {
-  font-size: 24px;
-  font-weight: 400;
-  margin-bottom: 30px;
-  color: #947862;
-}
-
-.contact-detail {
-  margin-bottom: 30px;
-}
-
-.contact-detail h3 {
-  font-size: 16px;
-  font-weight: 500;
-  margin-bottom: 10px;
-  color: #000000;
-  letter-spacing: 0.5px;
-}
-
-.contact-detail p {
-  color: #666;
-  line-height: 1.8;
-}
-
-.contact-form {
-  background-color: #f8f8f8;
-  padding: 40px;
-  border: 1px solid rgba(0, 0, 0, 0.05);
-}
-
-.form-group {
-  margin-bottom: 20px;
-}
-
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  background-color: #ffffff;
-  font-family: inherit;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #947862;
-}
-
-.form-group textarea {
-  height: 150px;
-  resize: vertical;
-}
-
-.submit-btn {
-  background-color: transparent;
-  border: 1px solid #000000;
-  color: #000000;
-  padding: 15px 40px;
-  font-size: 14px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  width: 100%;
-}
-
-.submit-btn:hover {
-  background-color: #947862;
-  border-color: #947862;
-  color: #ffffff;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .sidebar {
-    width: 240px;
-  }
-  
-  .main-content {
-    margin-left: 240px;
-    padding: 30px;
-  }
-  
-  .products-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .app {
-    flex-direction: column;
-  }
-  
-  .sidebar {
-    width: 100%;
-    height: auto;
-    position: relative;
-    padding: 20px;
-  }
-  
-  .main-content {
-    margin-left: 0;
-    padding: 30px 20px;
-  }
-  
-  .hero-title {
-    font-size: 42px;
-  }
-  
-  .category-grid,
-  .about-grid,
-  .contact-grid {
-    grid-template-columns: 1fr;
-  }
-  
-  .products-grid {
-    grid-template-columns: 1fr;
-  }
-}
-
-/* App.css */
+/* App.css - Updated for better mobile interaction */
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
@@ -706,9 +165,11 @@ body {
   min-height: 100vh;
   background-color: #ffffff;
   transition: margin-left 0.3s ease;
+  position: relative;
+  z-index: 1;
 }
 
-/* Hamburger Menu Button */
+/* Hamburger Menu Button - FIXED */
 .hamburger-menu {
   display: none;
   position: fixed;
@@ -722,6 +183,8 @@ body {
   cursor: pointer;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
+  pointer-events: auto; /* Ensure clicks are captured */
+  -webkit-tap-highlight-color: transparent; /* Remove tap highlight on mobile */
 }
 
 .hamburger-menu:hover {
@@ -766,13 +229,15 @@ body {
   opacity: 0;
   transition: opacity 0.3s ease;
   backdrop-filter: blur(3px);
+  pointer-events: none; /* Don't block clicks when hidden */
 }
 
 .overlay.show {
   opacity: 1;
+  pointer-events: auto; /* Allow clicks when visible */
 }
 
-/* Responsive Design */
+/* Responsive Design - FIXED for mobile */
 @media (max-width: 1024px) {
   .sidebar {
     width: 240px;
@@ -801,6 +266,7 @@ body {
     transform: translateX(-100%);
     width: 280px;
     box-shadow: 5px 0 30px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
   }
   
   .sidebar.open {
@@ -810,18 +276,61 @@ body {
   .main-content {
     margin-left: 0;
     width: 100%;
-    padding-top: 80px;
+    /* Remove padding-top that might be pushing content down */
+    padding-top: 0; /* Changed from 80px to 0 */
+    min-height: 100vh;
   }
   
-  .logo h1 {
-    font-size: 32px;
+  /* Add a safe zone for the fixed hamburger menu */
+  .main-content::before {
+    content: '';
+    display: block;
+    height: 80px; /* Space for the fixed hamburger */
+    width: 100%;
+    background: transparent;
+  }
+  
+  .logo{
+    margin-top: 30px;
+  }
+  
+  /* Ensure all clickable elements have proper touch targets */
+  button, 
+  a, 
+  .product-card-enhanced,
+  .product-image-wrapper,
+  .nav-menu a,
+  .category-chip,
+  .filter-btn,
+  .pagination-btn,
+  .modal-close,
+  .modal-nav,
+  .download-button {
+    min-height: 44px; /* Apple's recommended minimum touch target */
+    min-width: 44px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: rgba(148, 120, 98, 0.3);
+  }
+  
+  /* Fix for product cards on mobile */
+  .product-card-enhanced {
+    cursor: pointer;
+    touch-action: manipulation; /* Improve touch response */
+  }
+  
+  .product-image-wrapper {
+    touch-action: manipulation;
+  }
+  
+  /* Ensure modal buttons are clickable */
+  .modal-close,
+  .modal-nav {
+    z-index: 10001;
+    pointer-events: auto;
   }
 }
 
 @media (max-width: 480px) {
-  .logo{
-    margin-top: 50px;
-  }
   .sidebar {
     width: 100%;
     max-width: 300px;
@@ -831,11 +340,47 @@ body {
     top: 15px;
     left: 15px;
     padding: 10px;
+    z-index: 1101; /* Even higher z-index */
   }
   
   .hamburger-line {
     width: 20px;
   }
+  
+  /* Increase touch targets even more on small screens */
+  button, 
+  a, 
+  .product-card-enhanced,
+  .product-image-wrapper,
+  .nav-menu a,
+  .category-chip,
+  .filter-btn,
+  .pagination-btn,
+  .modal-close,
+  .modal-nav,
+  .download-button {
+    min-height: 48px;
+    min-width: 48px;
+  }
+}
+
+/* Fix for iOS tap highlight */
+* {
+  -webkit-tap-highlight-color: rgba(148, 120, 98, 0.2);
+}
+
+/* Ensure modals work on mobile */
+.modal-overlay {
+  z-index: 10000 !important;
+}
+
+.modal-content {
+  z-index: 10001 !important;
+}
+
+.modal-close,
+.modal-nav {
+  z-index: 10002 !important;
 }
 
 /* Animation for page transitions */
@@ -908,4 +453,257 @@ body {
   .hamburger-menu {
     display: none;
   }
+}
+
+/* Updated Navigation Menu with Double Underline */
+.nav-menu {
+  flex: 1;
+}
+
+.nav-menu ul {
+  list-style: none;
+}
+
+.nav-menu li {
+  margin-bottom: 20px;
+  position: relative;
+}
+
+.nav-menu a {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: #666;
+  font-size: 16px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 10px 0;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+/* Double underline effect - Bold primary underline */
+.nav-menu a::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background-color: #947862;
+  transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 2;
+}
+
+/* Double underline effect - Secondary lighter, longer underline */
+.nav-menu a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -4px; /* Position below the first underline */
+  width: 0;
+  height: 1px;
+  background-color: rgba(148, 120, 98, 0.4);
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1) 0.1s; /* Slight delay */
+  z-index: 1;
+}
+
+/* Hover effects */
+.nav-menu a:hover::before {
+  width: 40px; /* Bold underline length */
+}
+
+.nav-menu a:hover::after {
+  width: 60px; /* Secondary underline - longer */
+}
+
+/* Active state - both underlines visible */
+.nav-menu a.active::before {
+  width: 40px; /* Bold underline */
+}
+
+.nav-menu a.active::after {
+  width: 60px; /* Secondary underline - longer */
+}
+
+.nav-menu a:hover,
+.nav-menu a.active {
+  color: #947862;
+  transform: translateX(10px);
+}
+
+.nav-text {
+  position: relative;
+}
+
+/* Optional: Add a third very subtle line for extra depth */
+.nav-menu a .nav-text::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 0;
+  height: 1px;
+  background-color: rgba(148, 120, 98, 0.2);
+  transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
+  z-index: 0;
+}
+
+.nav-menu a:hover .nav-text::after,
+.nav-menu a.active .nav-text::after {
+  width: 80px; /* Third subtle line - longest */
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .nav-menu a:hover::before,
+  .nav-menu a.active::before {
+    width: 30px;
+  }
+  
+  .nav-menu a:hover::after,
+  .nav-menu a.active::after {
+    width: 50px;
+  }
+  
+  .nav-menu a:hover .nav-text::after,
+  .nav-menu a.active .nav-text::after {
+    width: 70px;
+  }
+}
+
+@media (max-width: 480px) {
+  .nav-menu a:hover::before,
+  .nav-menu a.active::before {
+    width: 25px;
+  }
+  
+  .nav-menu a:hover::after,
+  .nav-menu a.active::after {
+    width: 45px;
+  }
+  
+  .nav-menu a:hover .nav-text::after,
+  .nav-menu a.active .nav-text::after {
+    width: 65px;
+  }
+}
+
+/* Add these styles to your App.css */
+
+/* Logo Container */
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 50px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid rgba(148, 120, 98, 0.15);
+}
+
+.sidebar-logo {
+  width: 50px;
+  height: 50px;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 8px rgba(148, 120, 98, 0.2));
+  transition: transform 0.3s ease;
+}
+
+.sidebar-logo:hover {
+  transform: scale(1.05) rotate(5deg);
+}
+
+.logo-text {
+  flex: 1;
+}
+
+.logo-text h1 {
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+  color: #000000;
+  font-family: 'Playfair Display', serif;
+  position: relative;
+  display: inline-block;
+}
+
+.logo-text h1::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 30px;
+  height: 2px;
+  background-color: #947862;
+  transition: width 0.3s ease;
+}
+
+.logo-container:hover .logo-text h1::after {
+  width: 100%;
+}
+
+.logo-tagline {
+  font-size: 11px;
+  color: #666;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  margin-top: 8px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .logo-container {
+    margin-bottom: 40px;
+    padding-bottom: 15px;
+  }
+  
+  .sidebar-logo {
+    width: 45px;
+    height: 45px;
+  }
+  
+  .logo-text h1 {
+    font-size: 24px;
+  }
+  
+  .logo-tagline {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .logo-container {
+    gap: 12px;
+    margin-top: 20px;
+  }
+  
+  .sidebar-logo {
+    width: 40px;
+    height: 40px;
+  }
+  
+  .logo-text h1 {
+    font-size: 22px;
+  }
+}
+
+/* Animation for logo */
+@keyframes logoFloat {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+.sidebar-logo {
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+/* Optional: Add a subtle glow effect on hover */
+.logo-container:hover .sidebar-logo {
+  filter: drop-shadow(0 6px 12px rgba(148, 120, 98, 0.3));
 }

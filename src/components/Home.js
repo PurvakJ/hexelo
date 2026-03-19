@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
 import productsData from '../data/products.json';
+import companyReel from '../data/Hexelo Reel 3.mp4';
 
 function Home() {
   const [featuredProducts, setFeaturedProducts] = useState([]);
@@ -15,11 +16,15 @@ function Home() {
   const [currentTopImage, setCurrentTopImage] = useState(0);
   const [currentBottomImage, setCurrentBottomImage] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const videoRef = useRef(null);
+  const videoSectionRef = useRef(null);
   
   const sectionRefs = {
     hero: useRef(null),
     features: useRef(null),
     categories: useRef(null),
+    video: videoSectionRef,
     products: useRef(null),
     showcase: useRef(null),
     cta: useRef(null)
@@ -35,20 +40,47 @@ function Home() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Intersection Observer for scroll animations
+  // Intersection Observer for scroll animations and video autoplay
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          // For animations
           if (entry.isIntersecting) {
             setVisibleSections((prev) => ({
               ...prev,
               [entry.target.dataset.section]: true
             }));
           }
+
+          // For video autoplay when section is visible
+          if (entry.target.dataset.section === 'video') {
+            if (entry.isIntersecting) {
+              // Video section is visible - play video
+              if (videoRef.current) {
+                videoRef.current.play()
+                  .then(() => {
+                    setIsVideoPlaying(true);
+                  })
+                  .catch(error => {
+                    console.log('Autoplay prevented:', error);
+                    setIsVideoPlaying(false);
+                  });
+              }
+            } else {
+              // Video section is not visible - pause video
+              if (videoRef.current && isVideoPlaying) {
+                videoRef.current.pause();
+                setIsVideoPlaying(false);
+              }
+            }
+          }
         });
       },
-      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+      { 
+        threshold: 0.3,
+        rootMargin: '0px'
+      }
     );
 
     Object.entries(sectionRefs).forEach(([key, ref]) => {
@@ -59,7 +91,7 @@ function Home() {
     });
 
     return () => observer.disconnect();
-  }, []);
+  }, [isVideoPlaying]);
 
   // Carousel images from the provided URLs
   const carouselImages = [
@@ -76,18 +108,18 @@ function Home() {
     'https://i.postimg.cc/hPyx1Q7g/Whats-App-Image-2026-03-19-at-12-33-05-removebg-preview.png',
     'https://i.postimg.cc/RVsfLJn0/Whats-App-Image-2026-03-19-at-12-33-05-removebg-preview-copy.png',
     'https://i.postimg.cc/BQYDBP16/Whats-App-Image-2026-03-19-at-12-33-08-1-removebg-preview.png',
-    'https://i.postimg.cc/jdgN4nJS/Whats-App-Image-2026-03-19-at-12-33-08-removebg-preview.png'
+    'https://i.postimg.cc/jdgN4nJS/Whats-App-Image-2026-03-19-at-12-33-08-removebg-preview.png',
+    'https://i.postimg.cc/gknshnV4/Whats-App-Image-2026-03-19-at-11-34-55-removebg-preview.png',
+    'https://i.postimg.cc/Wbh8ZhGk/Whats-App-Image-2026-03-19-at-11-34-57-removebg-preview.png'
   ];
 
   // Auto-rotate carousel images
   useEffect(() => {
     const interval = setInterval(() => {
       if (isMobile) {
-        // For mobile, rotate top and bottom carousels
         setCurrentTopImage((prev) => (prev + 1) % carouselImages.length);
         setCurrentBottomImage((prev) => (prev + 2) % carouselImages.length);
       } else {
-        // For desktop, rotate left and right carousels
         setCurrentLeftImage((prev) => (prev + 1) % carouselImages.length);
         setCurrentRightImage((prev) => (prev + 2) % carouselImages.length);
       }
@@ -96,12 +128,13 @@ function Home() {
     return () => clearInterval(interval);
   }, [carouselImages.length, isMobile]);
 
-  // Process products data
+  // Process products data from new JSON structure
   useEffect(() => {
     const loadProducts = async () => {
       setTimeout(() => {
         const products = productsData.products;
         
+        // Group products by category
         const categories = {};
         products.forEach(product => {
           if (!categories[product.category]) {
@@ -112,7 +145,8 @@ function Home() {
         
         setCategoryProducts(categories);
         
-        const hardwareCategories = [
+        // Get featured products - one from each major category
+        const majorCategories = [
           'Main Door handles',
           'Mortise Handles',
           'Knobs',
@@ -123,33 +157,56 @@ function Home() {
           'Magnet Door Holder',
           'Mortise Locks',
           'Antique Brass',
-          'Sofa Legs'
+          'Sofa Legs',
+          'Brass Mortise Handles',
+          'Curtains Bracket',
+          'Door closer',
+          'Telescopy channels'
         ];
 
         const featured = [];
-        hardwareCategories.forEach(category => {
-          if (categories[category] && categories[category].length > 0 && featured.length < 10) {
+        majorCategories.forEach(category => {
+          if (categories[category] && categories[category].length > 0) {
+            // Add first product from each category
             featured.push(categories[category][0]);
+            
+            // If category has multiple products, add a second one to reach 20 total
+            if (categories[category].length > 1 && featured.length < 20) {
+              featured.push(categories[category][1]);
+            }
           }
         });
 
-        if (featured.length < 10) {
+        // If we still need more products, add from categories with many products
+        if (featured.length < 20) {
           Object.keys(categories).forEach(category => {
-            if (hardwareCategories.includes(category) && 
-                categories[category].length > 1 && 
-                featured.length < 10) {
-              featured.push(categories[category][1]);
+            if (categories[category].length > 2 && featured.length < 20) {
+              for (let i = 2; i < Math.min(categories[category].length, 20 - featured.length + 2); i++) {
+                featured.push(categories[category][i]);
+              }
             }
           });
         }
 
-        setFeaturedProducts(featured.slice(0, 10));
+        setFeaturedProducts(featured.slice(0, 20));
         setLoading(false);
       }, 500);
     };
 
     loadProducts();
   }, []);
+
+  const handleVideoPlay = () => {
+    if (videoRef.current) {
+      if (isVideoPlaying) {
+        videoRef.current.pause();
+        setIsVideoPlaying(false);
+      } else {
+        videoRef.current.play();
+        setIsVideoPlaying(true);
+      }
+    }
+  };
 
   const features = [
     { 
@@ -175,75 +232,49 @@ function Home() {
   ];
 
   const getHardwareCategories = () => {
-    const categoryData = [
-      { 
-        name: 'Main Door handles', 
-        icon: '🚪', 
-        image: productsData.products.find(p => p.category === 'Main Door handles')?.image || 'https://images.unsplash.com/photo-1499955085172-a104c9463ece?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Main Door handles').length
-      },
-      { 
-        name: 'Mortise Handles', 
-        icon: '🔐', 
-        image: productsData.products.find(p => p.category === 'Mortise Handles')?.image || 'https://images.unsplash.com/photo-1558005137-4ce5c84b1b1b?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Mortise Handles').length
-      },
-      { 
-        name: 'Knobs', 
-        icon: '🔘', 
-        image: productsData.products.find(p => p.category === 'Knobs')?.image || 'https://images.unsplash.com/photo-1567703818793-9632f7e15f7a?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Knobs').length
-      },
-      { 
-        name: 'Knocks', 
-        icon: '🔨', 
-        image: productsData.products.find(p => p.category === 'Knocks')?.image || 'https://images.unsplash.com/photo-1567703818793-9632f7e15f7a?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Knocks').length
-      },
-      { 
-        name: 'Brass Dooms & Knockers', 
-        icon: '🥇', 
-        image: productsData.products.find(p => p.category === 'Brass Dooms & Knockers')?.image || 'https://images.unsplash.com/photo-1567703818793-9632f7e15f7a?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Brass Dooms & Knockers').length
-      },
-      { 
-        name: 'Door silencer', 
-        icon: '🔇', 
-        image: productsData.products.find(p => p.category === 'Door silencer')?.image || 'https://images.unsplash.com/photo-1567703818793-9632f7e15f7a?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Door silencer').length
-      },
-      { 
-        name: 'Buffers', 
-        icon: '🛑', 
-        image: productsData.products.find(p => p.category === 'Buffers')?.image || 'https://images.unsplash.com/photo-1567703818793-9632f7e15f7a?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Buffers').length
-      },
-      { 
-        name: 'Magnet Door Holder', 
-        icon: '🧲', 
-        image: productsData.products.find(p => p.category === 'Magnet Door Holder')?.image || 'https://images.unsplash.com/photo-1567703818793-9632f7e15f7a?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Magnet Door Holder').length
-      },
-      { 
-        name: 'Mortise Locks', 
-        icon: '🔒', 
-        image: productsData.products.find(p => p.category === 'Mortise Locks')?.image || 'https://images.unsplash.com/photo-1558005137-4ce5c84b1b1b?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Mortise Locks').length
-      },
-      { 
-        name: 'Antique Brass', 
-        icon: '🏺', 
-        image: productsData.products.find(p => p.category === 'Antique Brass')?.image || 'https://images.unsplash.com/photo-1567703818793-9632f7e15f7a?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Antique Brass').length
-      },
-      { 
-        name: 'Sofa Legs', 
-        icon: '🪑', 
-        image: productsData.products.find(p => p.category === 'Sofa Legs')?.image || 'https://images.unsplash.com/photo-1567703818793-9632f7e15f7a?w=600&h=400&fit=crop',
-        count: productsData.products.filter(p => p.category === 'Sofa Legs').length
+    const products = productsData.products;
+    
+    // Get unique categories with their counts and first image
+    const categoryMap = new Map();
+    
+    products.forEach(product => {
+      if (!categoryMap.has(product.category)) {
+        categoryMap.set(product.category, {
+          name: product.category,
+          count: 1,
+          image: product.image
+        });
+      } else {
+        const cat = categoryMap.get(product.category);
+        cat.count += 1;
+        categoryMap.set(product.category, cat);
       }
-    ];
-    return categoryData.filter(cat => cat.count > 0);
+    });
+
+    // Define icons for categories
+    const categoryIcons = {
+      'Main Door handles': '🚪',
+      'Mortise Handles': '🔐',
+      'Knobs': '🔘',
+      'Knocks': '🔨',
+      'Brass Dooms & Knockers': '🥇',
+      'Door silencer': '🔇',
+      'Buffers': '🛑',
+      'Magnet Door Holder': '🧲',
+      'Mortise Locks': '🔒',
+      'Antique Brass': '🏺',
+      'Sofa Legs': '🪑',
+      'Brass Mortise Handles': '⚜️',
+      'Curtains Bracket': '🏷️',
+      'Door closer': '🚪',
+      'Telescopy channels': '📏'
+    };
+
+    // Convert map to array and add icons
+    return Array.from(categoryMap.values()).map(cat => ({
+      ...cat,
+      icon: categoryIcons[cat.name] || '🔩'
+    })).sort((a, b) => b.count - a.count); // Sort by count descending
   };
 
   const hardwareCategories = getHardwareCategories();
@@ -460,6 +491,51 @@ function Home() {
         </div>
       </section>
 
+      {/* Video Showcase Section - with autoplay on view */}
+      <section 
+        ref={sectionRefs.video} 
+        className={`section video-showcase-section ${visibleSections.video ? 'fade-in-up' : ''}`}
+      >
+        <div className="container">
+          <div className="section-header">
+            <span className="section-subtitle">Hexelo in Motion</span>
+            <h2 className="section-title">Experience Our <span className="text-highlight">Craftsmanship</span></h2>
+            <p className="section-description">
+              Watch our premium hardware collection come to life
+            </p>
+          </div>
+
+          <div className="video-container">
+            <div className="video-wrapper">
+              <video
+                ref={videoRef}
+                src={companyReel}
+                className="video-player"
+                loop
+                muted
+                playsInline
+                poster="https://images.unsplash.com/photo-1558005137-4ce5c84b1b1b?w=1200&h=675&fit=crop"
+              />
+              <div className={`video-overlay ${!isVideoPlaying ? 'visible' : ''}`}>
+                <button 
+                  className="video-play-button"
+                  onClick={handleVideoPlay}
+                  aria-label={isVideoPlaying ? 'Pause video' : 'Play video'}
+                >
+                  {isVideoPlaying ? '⏸️' : '▶️'}
+                </button>
+                <h3 className="video-title">Hexelo Premium Hardware</h3>
+                <p className="video-subtitle">Quality that speaks for itself</p>
+              </div>
+            </div>
+            <div className="video-caption">
+              <p>Discover the finest collection of door handles, knobs, and architectural hardware from Hexelo. 
+              With over 25 years of experience, we bring elegance and durability to every project.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Products Section */}
       <section 
         ref={sectionRefs.products} 
@@ -476,7 +552,7 @@ function Home() {
 
           {loading ? (
             <div className="products-skeleton">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((n) => (
                 <div key={n} className="skeleton-card">
                   <div className="skeleton-image"></div>
                   <div className="skeleton-content">
@@ -492,7 +568,7 @@ function Home() {
                 <div 
                   key={product.id} 
                   className="product-card"
-                  style={{ animationDelay: `${index * 0.1}s` }}
+                  style={{ animationDelay: `${index * 0.05}s` }}
                   onMouseEnter={() => setHoveredCard(`product-${product.id}`)}
                   onMouseLeave={() => setHoveredCard(null)}
                 >
