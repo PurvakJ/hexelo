@@ -9,7 +9,18 @@ function Product() {
   const [searchQuery, setSearchQuery] = useState('');
   const [sortBy, setSortBy] = useState('default');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const productsPerPage = 20;
+  
+  // Check screen size for responsive filters
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   
   // Get unique categories and sort them
   const categories = ['All', ...new Set(productsData.products.map(p => p.category))].sort((a, b) => {
@@ -18,12 +29,10 @@ function Product() {
     return a.localeCompare(b);
   });
   
-  // Filter products by category and search query
+  // Filter products by category only (no search filter on mobile)
   const filteredProducts = productsData.products.filter(p => {
     const matchesCategory = selectedCategory === 'All' || p.category === selectedCategory;
-    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         p.category.toLowerCase().includes(searchQuery.toLowerCase());
-    return matchesCategory && matchesSearch;
+    return matchesCategory;
   });
 
   // Sort products
@@ -42,16 +51,21 @@ function Product() {
     }
   });
 
-  // Pagination
-  const indexOfLastProduct = currentPage * productsPerPage;
-  const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
-  const currentProducts = sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+  // Determine which products to display based on device
+  const displayProducts = isMobile 
+    ? sortedProducts // Show all products on mobile
+    : (() => {
+        const indexOfLastProduct = currentPage * productsPerPage;
+        const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
+        return sortedProducts.slice(indexOfFirstProduct, indexOfLastProduct);
+      })();
+
   const totalPages = Math.ceil(sortedProducts.length / productsPerPage);
 
-  // Reset page when category changes
+  // Reset page when category changes (desktop only)
   useEffect(() => {
     setCurrentPage(1);
-  }, [selectedCategory, searchQuery]);
+  }, [selectedCategory]);
 
   // Handle image click to show modal
   const handleImageClick = (product) => {
@@ -148,68 +162,73 @@ function Product() {
         </div>
       </section>
 
-      {/* Filters Section */}
-      <section className="filters-section">
-        <div className="container">
-          <div className="filters-wrapper">
-            <div className="search-box">
-              <span className="search-icon">🔍</span>
-              <input
-                type="text"
-                placeholder="Search products..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="search-input"
-              />
+      {/* Mobile Category Filter - Always visible on mobile */}
+      {isMobile && (
+        <section className="mobile-filters-section">
+          <div className="container">
+            <div className="categories-wrapper mobile">
+              <div className="categories-scroll">
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    className={`category-chip ${selectedCategory === category ? 'active' : ''}`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                    {category !== 'All' && (
+                      <span className="category-count">
+                        ({productsData.products.filter(p => p.category === category).length})
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
             </div>
-
-            <div className="sort-box">
-              <select 
-                value={sortBy} 
-                onChange={(e) => setSortBy(e.target.value)}
-                className="sort-select"
-              >
-                <option value="default">Default Sort</option>
-                <option value="name-asc">Name (A-Z)</option>
-                <option value="name-desc">Name (Z-A)</option>
-                <option value="category-asc">Category (A-Z)</option>
-                <option value="category-desc">Category (Z-A)</option>
-              </select>
+            
+            <div className="results-info mobile">
+              <p>Showing all {sortedProducts.length} products</p>
             </div>
           </div>
+        </section>
+      )}
 
-          <div className="categories-wrapper">
-            <div className="categories-scroll">
-              {categories.map(category => (
-                <button
-                  key={category}
-                  className={`category-chip ${selectedCategory === category ? 'active' : ''}`}
-                  onClick={() => setSelectedCategory(category)}
-                >
-                  {category}
-                  {category !== 'All' && (
-                    <span className="category-count">
-                      ({productsData.products.filter(p => p.category === category).length})
-                    </span>
-                  )}
-                </button>
-              ))}
+      {/* Filters Section - Hidden on Mobile */}
+      {!isMobile && (
+        <section className="filters-section">
+          <div className="container">
+            <div className="categories-wrapper">
+              <div className="categories-scroll">
+                {categories.map(category => (
+                  <button
+                    key={category}
+                    className={`category-chip ${selectedCategory === category ? 'active' : ''}`}
+                    onClick={() => setSelectedCategory(category)}
+                  >
+                    {category}
+                    {category !== 'All' && (
+                      <span className="category-count">
+                        ({productsData.products.filter(p => p.category === category).length})
+                      </span>
+                    )}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="results-info">
+              <p>Showing {displayProducts.length} of {sortedProducts.length} products</p>
             </div>
           </div>
-
-          <div className="results-info">
-            <p>Showing {currentProducts.length} of {sortedProducts.length} products</p>
-          </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Products Grid */}
       <section className="products-section">
         <div className="container">
-          {currentProducts.length > 0 ? (
+          {displayProducts.length > 0 ? (
             <>
-              <div className="products-grid-enhanced">
-                {currentProducts.map((product, index) => (
+              <div className={`products-grid-enhanced ${isMobile ? 'mobile-grid' : ''}`}>
+                {displayProducts.map((product, index) => (
                   <div 
                     key={product.id} 
                     className="product-card-enhanced"
@@ -246,8 +265,8 @@ function Product() {
                 ))}
               </div>
 
-              {/* Pagination */}
-              {totalPages > 1 && (
+              {/* Pagination - Only show on desktop */}
+              {!isMobile && totalPages > 1 && (
                 <div className="pagination">
                   <button 
                     className={`pagination-btn ${currentPage === 1 ? 'disabled' : ''}`}
@@ -298,7 +317,7 @@ function Product() {
             <div className="no-products">
               <span className="no-products-icon">🔍</span>
               <h3>No products found</h3>
-              <p>Try adjusting your search or filter criteria</p>
+              <p>Try adjusting your filter criteria</p>
               <button 
                 className="reset-btn"
                 onClick={() => {
