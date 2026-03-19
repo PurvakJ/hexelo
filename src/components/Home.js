@@ -1,3 +1,4 @@
+// components/Home.js
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
@@ -21,6 +22,32 @@ function Home() {
     cta: useRef(null)
   };
 
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections((prev) => ({
+              ...prev,
+              [entry.target.dataset.section]: true
+            }));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px 0px -50px 0px' }
+    );
+
+    Object.entries(sectionRefs).forEach(([key, ref]) => {
+      if (ref.current) {
+        ref.current.dataset.section = key;
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   // Carousel images from the provided URLs
   const carouselImages = [
     'https://i.postimg.cc/rmSzBvHX/Whats-App-Image-2026-03-19-at-11-34-55-removebg-preview.png',
@@ -43,19 +70,18 @@ function Home() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentLeftImage((prev) => (prev + 1) % carouselImages.length);
-      setCurrentRightImage((prev) => (prev + 2) % carouselImages.length); // Offset by 2 for variety
-    }, 3000); // Change every 3 seconds
+      setCurrentRightImage((prev) => (prev + 2) % carouselImages.length);
+    }, 3000);
 
     return () => clearInterval(interval);
   }, [carouselImages.length]);
 
-  // Process products data - Hardware only
+  // Process products data
   useEffect(() => {
     const loadProducts = async () => {
       setTimeout(() => {
         const products = productsData.products;
         
-        // Group by category
         const categories = {};
         products.forEach(product => {
           if (!categories[product.category]) {
@@ -66,41 +92,38 @@ function Home() {
         
         setCategoryProducts(categories);
         
-        // Get featured products (mix from different hardware categories) - LIMITED TO 8
-// Get featured products (mix from different hardware categories) - UPDATED TO 10
-const hardwareCategories = [
-  'Main Door handles',
-  'Mortise Handles',
-  'Knobs',
-  'Knocks',
-  'Brass Dooms & Knockers',
-  'Door silencer',
-  'Buffers',
-  'Magnet Door Holder',
-  'Mortise Locks',
-  'Antique Brass',
-  'Sofa Legs'
-];
+        const hardwareCategories = [
+          'Main Door handles',
+          'Mortise Handles',
+          'Knobs',
+          'Knocks',
+          'Brass Dooms & Knockers',
+          'Door silencer',
+          'Buffers',
+          'Magnet Door Holder',
+          'Mortise Locks',
+          'Antique Brass',
+          'Sofa Legs'
+        ];
 
-const featured = [];
-hardwareCategories.forEach(category => {
-  if (categories[category] && categories[category].length > 0 && featured.length < 10) { // Changed from 8 to 10
-    featured.push(categories[category][0]);
-  }
-});
+        const featured = [];
+        hardwareCategories.forEach(category => {
+          if (categories[category] && categories[category].length > 0 && featured.length < 10) {
+            featured.push(categories[category][0]);
+          }
+        });
 
-// Add more if we need to reach 10
-if (featured.length < 10) { // Changed from 8 to 10
-  Object.keys(categories).forEach(category => {
-    if (hardwareCategories.includes(category) && 
-        categories[category].length > 1 && 
-        featured.length < 10) { // Changed from 8 to 10
-      featured.push(categories[category][1]);
-    }
-  });
-}
+        if (featured.length < 10) {
+          Object.keys(categories).forEach(category => {
+            if (hardwareCategories.includes(category) && 
+                categories[category].length > 1 && 
+                featured.length < 10) {
+              featured.push(categories[category][1]);
+            }
+          });
+        }
 
-setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
+        setFeaturedProducts(featured.slice(0, 10));
         setLoading(false);
       }, 500);
     };
@@ -108,7 +131,6 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
     loadProducts();
   }, []);
 
-  // Hardware-focused features
   const features = [
     { 
       icon: '🔩', 
@@ -132,7 +154,6 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
     }
   ];
 
-  // Hardware categories from actual data
   const getHardwareCategories = () => {
     const categoryData = [
       { 
@@ -230,13 +251,12 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
     }
   ];
 
-  // Calculate total hardware products
   const totalProducts = productsData.products.length;
   const uniqueCategories = new Set(productsData.products.map(p => p.category)).size;
 
   return (
     <div className="home">
-      {/* Hero Section - Hexelo Brand Focused with Carousel Images */}
+      {/* Hero Section */}
       <section 
         ref={sectionRefs.hero} 
         className={`hero-section ${visibleSections.hero ? 'fade-in' : ''}`}
@@ -244,7 +264,6 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
         <div className="hero-overlay"></div>
         <div className="hero-pattern"></div>
         
-        {/* Left Carousel Images */}
         <div className="hero-carousel-left">
           {carouselImages.map((img, index) => (
             <img
@@ -256,7 +275,6 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
           ))}
         </div>
 
-        {/* Right Carousel Images */}
         <div className="hero-carousel-right">
           {carouselImages.map((img, index) => (
             <img
@@ -288,7 +306,7 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
             we bring you the finest quality hardware for wholesale and retail needs.
           </p>
           <div className="hero-buttons">
-            <Link to="/products" className="btn btn-primary">
+            <Link to="/product" className="btn btn-primary">
               Explore Collection
               <span className="btn-icon">→</span>
             </Link>
@@ -309,10 +327,6 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
               <span className="hero-feature-icon">⭐</span>
               <span>25+ Years Experience</span>
             </div>
-            <div className="hero-feature">
-              <span className="hero-feature-icon1"></span>
-              <span></span>
-            </div>
           </div>
         </div>
         <div className="hero-scroll-indicator">
@@ -321,7 +335,7 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
         </div>
       </section>
 
-      {/* Features Section - Hexelo Focused */}
+      {/* Features Section */}
       <section 
         ref={sectionRefs.features} 
         className={`section features-section ${visibleSections.features ? 'fade-in-up' : ''}`}
@@ -354,7 +368,7 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
         </div>
       </section>
 
-      {/* Categories Section - Hardware Categories Only */}
+      {/* Categories Section */}
       <section 
         ref={sectionRefs.categories} 
         className={`section categories-section ${visibleSections.categories ? 'slide-in' : ''}`}
@@ -383,7 +397,7 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
                   <span className="category-icon">{category.icon}</span>
                   <h3 className="category-name">{category.name}</h3>
                   <span className="category-count">{category.count} Products</span>
-                  <Link to={`/products?category=${encodeURIComponent(category.name)}`} className="category-link">
+                  <Link to={`/product?category=${encodeURIComponent(category.name)}`} className="category-link">
                     Explore
                     <span className="category-link-icon">→</span>
                   </Link>
@@ -394,7 +408,7 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
         </div>
       </section>
 
-      {/* Featured Hardware Products - NOW SHOWING ONLY 8 */}
+      {/* Featured Products Section */}
       <section 
         ref={sectionRefs.products} 
         className={`section featured-section ${visibleSections.products ? 'zoom-in' : ''}`}
@@ -409,44 +423,47 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
           </div>
 
           {loading ? (
-  <div className="products-skeleton">
-    {[1, 2, 3, 4, 5, 6, 7, 8].map((n) => (
-      <div key={n} className="skeleton-card">
-        <div className="skeleton-image"></div>
-        <div className="skeleton-content">
-          <div className="skeleton-title"></div>
-          <div className="skeleton-category"></div>
-        </div>
-      </div>
-    ))}
-  </div>
-) : (
-  <div className="products-grid">
-    {featuredProducts.map((product, index) => (
-      <div 
-        key={product.id} 
-        className="product-card"
-        style={{ animationDelay: `${index * 0.1}s` }}
-        onMouseEnter={() => setHoveredCard(`product-${product.id}`)}
-        onMouseLeave={() => setHoveredCard(null)}
-      >
-        <div className="product-image-wrapper">
-          <img 
-            src={product.image} 
-            alt={product.name}
-            className="product-image"
-            loading="lazy"
-          />
-          <div className="product-badge">Featured</div>
-          <span className="product-category">{product.category}</span>
-        </div>
-      </div>
-    ))}
-  </div>
-)}
+            <div className="products-skeleton">
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+                <div key={n} className="skeleton-card">
+                  <div className="skeleton-image"></div>
+                  <div className="skeleton-content">
+                    <div className="skeleton-title"></div>
+                    <div className="skeleton-category"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="products-grid">
+              {featuredProducts.map((product, index) => (
+                <div 
+                  key={product.id} 
+                  className="product-card"
+                  style={{ animationDelay: `${index * 0.1}s` }}
+                  onMouseEnter={() => setHoveredCard(`product-${product.id}`)}
+                  onMouseLeave={() => setHoveredCard(null)}
+                >
+                  <div className="product-image-wrapper">
+                    <img 
+                      src={product.image} 
+                      alt={product.name}
+                      className="product-image"
+                      loading="lazy"
+                    />
+                    <div className="product-badge">Featured</div>
+                    <span className="product-category-tag">{product.category}</span>
+                  </div>
+                  <div className="product-info">
+                    <h3 className="product-name">{product.name}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
 
           <div className="section-footer">
-            <Link to="/products" className="btn btn-outline-dark">
+            <Link to="/product" className="btn btn-outline-dark">
               View All Products
               <span className="btn-icon">→</span>
             </Link>
@@ -454,7 +471,6 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
         </div>
       </section>
 
-      {/* Rest of the sections remain exactly the same */}
       {/* Our Presence Section */}
       <section className="section brands-section">
         <div className="container">
@@ -469,17 +485,17 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
           <div className="brands-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
             <div className="brand-item">
               <span className="brand-name" style={{ fontSize: '1.5rem' }}>🏛️ Bathinda</span>
-              <p style={{ marginTop: '10px', color: 'var(--text-secondary)' }}>Main Office & Warehouse</p>
+              <p style={{ marginTop: '10px', color: '#666' }}>Main Office & Warehouse</p>
             </div>
             <div className="brand-item">
               <span className="brand-name" style={{ fontSize: '1.5rem' }}>🏭 Rajkot</span>
-              <p style={{ marginTop: '10px', color: 'var(--text-secondary)' }}>Branch Office</p>
+              <p style={{ marginTop: '10px', color: '#666' }}>Branch Office</p>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Testimonials */}
+      {/* Testimonials Section */}
       <section className="section testimonials-section">
         <div className="container">
           <div className="section-header">
@@ -528,7 +544,7 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
         </div>
       </section>
 
-      {/* Stats Section - Hexelo Focused */}
+      {/* Stats Section */}
       <section className="stats-section">
         <div className="container">
           <div className="stats-grid">
@@ -552,7 +568,7 @@ setFeaturedProducts(featured.slice(0, 10)); // Changed from 8 to 10
         </div>
       </section>
 
-      {/* SEO Content - Hexelo Focused */}
+      {/* SEO Section */}
       <section className="section seo-section">
         <div className="container">
           <div className="seo-content">

@@ -1,66 +1,152 @@
-/* Loader.css */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap');
+/* components/Loader.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap');
 
 .loader-container {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
-  background: linear-gradient(135deg, var(--brown-800) 0%, var(--brown-900) 100%);
+  height: 100%;
+  background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 9999;
-  transition: opacity 0.5s ease;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  overflow: hidden;
 }
 
 .loader-container.fade-out {
   opacity: 0;
-  pointer-events: none;
+  visibility: hidden;
 }
 
 .loader-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
+  text-align: center;
+  max-width: 800px;
+  padding: 20px;
+  position: relative;
+  z-index: 10;
 }
 
-/* Logo Wrapper Animations */
+/* Enhanced Logo Animation */
 .logo-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
+  margin-bottom: 40px;
+  position: relative;
+  display: inline-block;
 }
 
-.logo-wrapper.pulsing {
-  animation: pulse 1.5s ease-in-out infinite;
+.logo-wrapper.pulsing-rotating {
+  animation: pulseRotate 2s ease-in-out infinite;
 }
 
 .logo-wrapper.centering {
-  animation: centerAndGrow 1s ease forwards;
-}
-
-.logo-wrapper.complete {
-  transform: scale(1);
+  animation: centerLogoWithRotate 1.5s ease-out forwards;
 }
 
 .loader-logo {
-  width: 100px;
+  width: 180px;
   height: auto;
-  transition: all 0.5s ease;
+  filter: drop-shadow(0 10px 20px rgba(148, 120, 98, 0.3));
+  transition: transform 0.3s ease;
+  position: relative;
+  z-index: 2;
 }
 
-/* Text Animation */
+/* Logo ring effects */
+.logo-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 200px;
+  height: 200px;
+  border: 2px solid rgba(148, 120, 98, 0.3);
+  border-radius: 50%;
+  animation: ringPulse 2s ease-in-out infinite;
+  z-index: 1;
+}
+
+.logo-ring-outer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 220px;
+  height: 220px;
+  border: 2px dashed rgba(148, 120, 98, 0.2);
+  border-radius: 50%;
+  animation: ringRotate 8s linear infinite;
+  z-index: 1;
+}
+
+@keyframes pulseRotate {
+  0% {
+    transform: scale(1) rotate(0deg);
+  }
+  25% {
+    transform: scale(1.2) rotate(90deg);
+  }
+  50% {
+    transform: scale(1.1) rotate(180deg);
+  }
+  75% {
+    transform: scale(1.2) rotate(270deg);
+  }
+  100% {
+    transform: scale(1) rotate(360deg);
+  }
+}
+
+@keyframes centerLogoWithRotate {
+  0% {
+    transform: scale(1) rotate(0deg) translateY(0);
+  }
+  20% {
+    transform: scale(1.3) rotate(90deg) translateY(-30px);
+  }
+  40% {
+    transform: scale(1.2) rotate(180deg) translateY(-20px);
+  }
+  60% {
+    transform: scale(1.1) rotate(270deg) translateY(-10px);
+  }
+  80% {
+    transform: scale(1.05) rotate(315deg) translateY(-5px);
+  }
+  100% {
+    transform: scale(1) rotate(360deg) translateY(0);
+  }
+}
+
+@keyframes ringPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 0.6;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+@keyframes ringRotate {
+  0% {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
+
+/* Sequential Text Animation */
 .text-container {
-  display: flex;
-  gap: 8px;
+  margin-bottom: 20px;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px);
   transition: all 0.5s ease;
+  min-height: 80px;
 }
 
 .text-container.visible {
@@ -69,457 +155,356 @@
 }
 
 .letter {
+  display: inline-block;
+  font-size: 64px;
+  font-weight: 700;
   font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  font-weight: 900;
-  color: var(--gold);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  animation: bounceIn 0.5s ease forwards;
+  color: #947862;
+  margin: 0 5px;
   opacity: 0;
-  transform: translateY(20px);
+  transform: translateY(30px) scale(0.5);
+  transition: all 0.3s ease;
 }
 
-/* Stagger the letter animations */
-.letter:nth-child(1) { animation-delay: 2.6s; }
-.letter:nth-child(2) { animation-delay: 2.7s; }
-.letter:nth-child(3) { animation-delay: 2.8s; }
-.letter:nth-child(4) { animation-delay: 2.9s; }
-.letter:nth-child(5) { animation-delay: 3.0s; }
-.letter:nth-child(6) { animation-delay: 3.1s; }
+.letter.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  animation: letterPop 0.3s ease-out;
+}
 
-/* Keyframe Animations */
-@keyframes pulse {
+@keyframes letterPop {
   0% {
-    transform: scale(0.8);
+    transform: scale(0.5);
   }
   50% {
     transform: scale(1.2);
   }
   100% {
-    transform: scale(0.8);
+    transform: scale(1);
   }
 }
 
-@keyframes centerAndGrow {
-  0% {
-    transform: scale(1.2) translateY(0);
-  }
-  50% {
-    transform: scale(1.5) translateY(-20px);
-  }
-  100% {
-    transform: scale(1) translateY(0);
-  }
-}
-
-@keyframes bounceIn {
-  0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(-5px);
-  }
-  100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .loader-logo {
-    width: 80px;
-  }
-  
-  .letter {
-    font-size: 2.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .loader-logo {
-    width: 60px;
-  }
-  
-  .letter {
-    font-size: 2rem;
-  }
-  
-  .text-container {
-    gap: 4px;
-  }
-}
-
-/* Loader.css */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&display=swap');
-
-.loader-container {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  background: linear-gradient(135deg, var(--brown-800) 0%, var(--brown-900) 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 9999;
-  transition: opacity 0.5s ease;
-}
-
-.loader-container.fade-out {
+/* Tagline Animation */
+.tagline-container {
   opacity: 0;
-  pointer-events: none;
+  transform: translateY(30px);
+  transition: all 0.5s ease 0.2s;
 }
 
-.loader-content {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-}
-
-/* Logo Wrapper Animations */
-.logo-wrapper {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.5s ease;
-  position: relative;
-}
-
-/* Circular motion animation */
-.logo-wrapper.pulsing {
-  animation: circularMotion 2s ease-in-out infinite;
-}
-
-@keyframes circularMotion {
-  0% {
-    transform: translate(0, 0) scale(0.8);
-  }
-  25% {
-    transform: translate(30px, -30px) scale(1.2);
-  }
-  50% {
-    transform: translate(60px, 0) scale(0.8);
-  }
-  75% {
-    transform: translate(30px, 30px) scale(1.2);
-  }
-  100% {
-    transform: translate(0, 0) scale(0.8);
-  }
-}
-
-/* Alternative circular path with rotation */
-@keyframes circularPath {
-  0% {
-    transform: rotate(0deg) translateX(40px) rotate(0deg) scale(1);
-  }
-  25% {
-    transform: rotate(90deg) translateX(40px) rotate(-90deg) scale(1.3);
-  }
-  50% {
-    transform: rotate(180deg) translateX(40px) rotate(-180deg) scale(0.9);
-  }
-  75% {
-    transform: rotate(270deg) translateX(40px) rotate(-270deg) scale(1.3);
-  }
-  100% {
-    transform: rotate(360deg) translateX(40px) rotate(-360deg) scale(1);
-  }
-}
-
-/* Choose which animation you prefer - uncomment the one you like */
-
-/* Option 1: Smooth circular path */
-.logo-wrapper.pulsing {
-  animation: circularPath 2.5s ease-in-out infinite;
-}
-
-/* Option 2: Figure-8 motion */
-@keyframes figureEight {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-  25% {
-    transform: translate(40px, -40px) scale(1.3);
-  }
-  50% {
-    transform: translate(80px, 0) scale(0.8);
-  }
-  75% {
-    transform: translate(40px, 40px) scale(1.3);
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-}
-
-/* Option 3: Spiral motion */
-@keyframes spiral {
-  0% {
-    transform: rotate(0deg) translateX(0px) rotate(0deg) scale(1);
-  }
-  20% {
-    transform: rotate(72deg) translateX(20px) rotate(-72deg) scale(1.1);
-  }
-  40% {
-    transform: rotate(144deg) translateX(40px) rotate(-144deg) scale(1.2);
-  }
-  60% {
-    transform: rotate(216deg) translateX(40px) rotate(-216deg) scale(1.1);
-  }
-  80% {
-    transform: rotate(288deg) translateX(20px) rotate(-288deg) scale(1);
-  }
-  100% {
-    transform: rotate(360deg) translateX(0px) rotate(-360deg) scale(1);
-  }
-}
-
-/* Use the spiral animation for a more dynamic circular motion */
-.logo-wrapper.pulsing {
-  animation: spiral 2s ease-in-out infinite;
-}
-
-.logo-wrapper.centering {
-  animation: centerAndGrow 1s ease forwards;
-}
-
-.logo-wrapper.complete {
-  transform: scale(1) translate(0, 0);
-}
-
-.loader-logo {
-  width: 100px;
-  height: auto;
-  transition: all 0.5s ease;
-  filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.3));
-}
-
-/* Text Animation */
-.text-container {
-  display: flex;
-  gap: 8px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: all 0.5s ease;
-}
-
-.text-container.visible {
+.tagline-container.visible {
   opacity: 1;
   transform: translateY(0);
 }
 
-.letter {
-  font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  font-weight: 900;
-  color: var(--gold);
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-  animation: bounceIn 0.5s ease forwards;
-  opacity: 0;
-  transform: translateY(20px);
+.tagline {
+  font-size: 18px;
+  color: #666;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  position: relative;
+  padding: 0 20px;
+  display: inline-block;
+  animation: taglineGlow 2s ease-in-out infinite;
 }
 
-/* Stagger the letter animations */
-.letter:nth-child(1) { animation-delay: 2.6s; }
-.letter:nth-child(2) { animation-delay: 2.7s; }
-.letter:nth-child(3) { animation-delay: 2.8s; }
-.letter:nth-child(4) { animation-delay: 2.9s; }
-.letter:nth-child(5) { animation-delay: 3.0s; }
-.letter:nth-child(6) { animation-delay: 3.1s; }
+.tagline::before,
+.tagline::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #947862, transparent);
+}
 
-/* Keyframe Animations */
-@keyframes centerAndGrow {
+.tagline::before {
+  left: -30px;
+  animation: lineExpand 1.5s ease-out forwards;
+}
+
+.tagline::after {
+  right: -30px;
+  animation: lineExpand 1.5s ease-out forwards 0.3s;
+}
+
+@keyframes lineExpand {
   0% {
-    transform: translate(0, 0) scale(1.2);
+    width: 0;
+    opacity: 0;
+  }
+  100% {
+    width: 30px;
+    opacity: 1;
+  }
+}
+
+@keyframes taglineGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(148, 120, 98, 0);
   }
   50% {
-    transform: translate(0, -20px) scale(1.5);
-  }
-  100% {
-    transform: translate(0, 0) scale(1);
+    text-shadow: 0 0 20px rgba(148, 120, 98, 0.3);
   }
 }
 
-@keyframes bounceIn {
+/* Enhanced Loading Bar */
+.loading-bar-container {
+  margin-top: 40px;
+  opacity: 0;
+  transform: scaleX(0);
+  transition: all 0.5s ease;
+}
+
+.loading-bar-container.visible {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.loading-bar {
+  width: 300px;
+  height: 4px;
+  background-color: rgba(148, 120, 98, 0.1);
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.loading-bar-progress {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, #947862, #b8a18b, #947862, transparent);
+  animation: loadingProgress 1.5s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes loadingProgress {
   0% {
-    opacity: 0;
-    transform: translateY(20px);
-  }
-  60% {
-    opacity: 1;
-    transform: translateY(-5px);
+    transform: translateX(-100%);
   }
   100% {
-    opacity: 1;
-    transform: translateY(0);
+    transform: translateX(200%);
   }
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .loader-logo {
-    width: 80px;
+/* Background Decoration */
+.loader-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.loader-background span {
+  position: absolute;
+  font-size: 120px;
+  color: rgba(148, 120, 98, 0.03);
+  font-weight: 700;
+  font-family: 'Playfair Display', serif;
+  white-space: nowrap;
+  animation: floatBackground 15s linear infinite;
+}
+
+.loader-background span:nth-child(1) {
+  top: 10%;
+  left: -10%;
+  animation-duration: 20s;
+  transform: rotate(-10deg);
+}
+
+.loader-background span:nth-child(2) {
+  bottom: 20%;
+  right: -10%;
+  font-size: 180px;
+  animation-duration: 25s;
+  animation-direction: reverse;
+  transform: rotate(5deg);
+}
+
+.loader-background span:nth-child(3) {
+  top: 40%;
+  right: 5%;
+  font-size: 90px;
+  animation-duration: 15s;
+  transform: rotate(15deg);
+}
+
+@keyframes floatBackground {
+  0% {
+    transform: translateX(0) rotate(0deg) scale(1);
   }
-  
+  50% {
+    transform: translateX(-25%) rotate(5deg) scale(1.1);
+  }
+  100% {
+    transform: translateX(-50%) rotate(10deg) scale(1);
+  }
+}
+
+/* Hardware Icons Decoration */
+.hardware-icon {
+  position: absolute;
+  font-size: 40px;
+  color: rgba(148, 120, 98, 0.15);
+  animation: floatIcon 10s linear infinite;
+  z-index: 1;
+}
+
+.hardware-icon:nth-child(1) {
+  top: 15%;
+  left: 10%;
+  animation-duration: 12s;
+  transform: rotate(0deg);
+}
+
+.hardware-icon:nth-child(2) {
+  bottom: 25%;
+  right: 12%;
+  animation-duration: 15s;
+  animation-direction: reverse;
+  transform: rotate(45deg);
+}
+
+.hardware-icon:nth-child(3) {
+  top: 60%;
+  left: 8%;
+  animation-duration: 18s;
+  transform: rotate(90deg);
+}
+
+.hardware-icon:nth-child(4) {
+  top: 30%;
+  right: 20%;
+  animation-duration: 14s;
+  transform: rotate(180deg);
+}
+
+.hardware-icon:nth-child(5) {
+  bottom: 40%;
+  left: 15%;
+  animation-duration: 16s;
+  transform: rotate(270deg);
+}
+
+.hardware-icon:nth-child(6) {
+  top: 70%;
+  right: 25%;
+  animation-duration: 20s;
+  transform: rotate(15deg);
+}
+
+@keyframes floatIcon {
+  0% {
+    transform: translateY(0) rotate(0deg) scale(1);
+  }
+  33% {
+    transform: translateY(-20px) rotate(120deg) scale(1.1);
+  }
+  66% {
+    transform: translateY(20px) rotate(240deg) scale(0.9);
+  }
+  100% {
+    transform: translateY(0) rotate(360deg) scale(1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
   .letter {
-    font-size: 2.5rem;
+    font-size: 48px;
+    margin: 0 3px;
   }
 
-  @keyframes spiral {
-    0% {
-      transform: rotate(0deg) translateX(0px) rotate(0deg) scale(1);
-    }
-    20% {
-      transform: rotate(72deg) translateX(15px) rotate(-72deg) scale(1.1);
-    }
-    40% {
-      transform: rotate(144deg) translateX(30px) rotate(-144deg) scale(1.2);
-    }
-    60% {
-      transform: rotate(216deg) translateX(30px) rotate(-216deg) scale(1.1);
-    }
-    80% {
-      transform: rotate(288deg) translateX(15px) rotate(-288deg) scale(1);
-    }
-    100% {
-      transform: rotate(360deg) translateX(0px) rotate(-360deg) scale(1);
-    }
+  .loader-logo {
+    width: 140px;
+  }
+
+  .logo-ring {
+    width: 160px;
+    height: 160px;
+  }
+
+  .logo-ring-outer {
+    width: 180px;
+    height: 180px;
+  }
+
+  .tagline {
+    font-size: 14px;
+  }
+
+  .tagline::before,
+  .tagline::after {
+    width: 20px;
+  }
+
+  .loader-background span {
+    font-size: 80px;
+  }
+
+  .hardware-icon {
+    font-size: 30px;
+  }
+
+  .loading-bar {
+    width: 250px;
   }
 }
 
 @media (max-width: 480px) {
-  .loader-logo {
-    width: 60px;
-  }
-  
   .letter {
-    font-size: 2rem;
-  }
-  
-  .text-container {
-    gap: 4px;
+    font-size: 36px;
+    margin: 0 2px;
   }
 
-  @keyframes spiral {
-    0% {
-      transform: rotate(0deg) translateX(0px) rotate(0deg) scale(1);
-    }
-    20% {
-      transform: rotate(72deg) translateX(10px) rotate(-72deg) scale(1.1);
-    }
-    40% {
-      transform: rotate(144deg) translateX(20px) rotate(-144deg) scale(1.2);
-    }
-    60% {
-      transform: rotate(216deg) translateX(20px) rotate(-216deg) scale(1.1);
-    }
-    80% {
-      transform: rotate(288deg) translateX(10px) rotate(-288deg) scale(1);
-    }
-    100% {
-      transform: rotate(360deg) translateX(0px) rotate(-360deg) scale(1);
-    }
+  .loader-logo {
+    width: 120px;
+  }
+
+  .logo-ring {
+    width: 140px;
+    height: 140px;
+  }
+
+  .logo-ring-outer {
+    width: 160px;
+    height: 160px;
+  }
+
+  .tagline {
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .loader-background span {
+    font-size: 60px;
+  }
+
+  .hardware-icon {
+    font-size: 24px;
+  }
+
+  .loading-bar {
+    width: 200px;
   }
 }
 
-/* Add these styles to your existing Loader.css */
-
-/* Tagline Styles */
-.tagline-container {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.6s ease;
-    margin-top: 10px;
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .logo-wrapper,
+  .letter,
+  .loading-bar-progress,
+  .loader-background span,
+  .hardware-icon,
+  .logo-ring,
+  .logo-ring-outer {
+    animation: none !important;
   }
-  
-  .tagline-container.visible {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  
-  .tagline {
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
-    font-weight: 500;
-    color: var(--gold);
-    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-    letter-spacing: 2px;
-    position: relative;
-    display: inline-block;
-    animation: fadeInUp 0.8s ease forwards;
-    background: linear-gradient(135deg, var(--gold) 0%, #F5E6B2 50%, var(--gold) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-size: 200% auto;
-    animation: shine 3s linear infinite, fadeInUp 0.8s ease forwards;
-  }
-  
-  /* Shine effect for tagline */
-  @keyframes shine {
-    to {
-      background-position: 200% center;
-    }
-  }
-  
-  /* Adjust spacing for loader content */
-  .loader-content {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-  }
-  
-  /* Update responsive styles */
-  @media (max-width: 768px) {
-    .tagline {
-      font-size: 1rem;
-      letter-spacing: 1.5px;
-    }
-    
-    .loader-content {
-      gap: 15px;
-    }
-  }
-  
-  @media (max-width: 480px) {
-    .tagline {
-      font-size: 0.9rem;
-      letter-spacing: 1px;
-    }
-    
-    .loader-content {
-      gap: 12px;
-    }
-  }
-  
-  /* Optional: Add a subtle underline effect */
-  .tagline::after {
-    content: '';
-    position: absolute;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 0;
-    height: 2px;
-    background: var(--gold);
-    animation: expandLine 0.6s ease 3.4s forwards;
-  }
-  
-  @keyframes expandLine {
-    from {
-      width: 0;
-      opacity: 0;
-    }
-    to {
-      width: 80%;
-      opacity: 1;
-    }
-  }
+}

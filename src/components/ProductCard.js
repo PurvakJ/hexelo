@@ -31,10 +31,7 @@ function ProductCard({ product }) {
         </div>
         <div className="product-info">
           <h3 className="product-name">{product.name}</h3>
-          <Link to={`/product/${product.id}`} className="product-link">
-            View Details
-            <span className="product-link-icon">→</span>
-          </Link>
+ 
         </div>
       </div>
 
