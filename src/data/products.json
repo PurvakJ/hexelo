@@ -1,0 +1,509 @@
+{
+    "products": [
+      {
+        "id": 1,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/qMZ46Hvs/Whats_App_Image_2026_03_19_at_11_26_18.jpg"
+      },
+      {
+        "id": 2,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/BQw4Pfnc/Whats_App_Image_2026_03_19_at_11_26_18_(1).jpg"
+      },
+      {
+        "id": 3,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/jdktnYS6/Whats_App_Image_2026_03_19_at_11_26_19.jpg"
+      },
+      {
+        "id": 4,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/XYG3w1rB/Whats_App_Image_2026_03_19_at_11_29_35.jpg"
+      },
+      {
+        "id": 5,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/RVb4JxZc/Whats_App_Image_2026_03_19_at_11_29_35_(1).jpg"
+      },
+      {
+        "id": 6,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/XYG3w1rF/Whats_App_Image_2026_03_19_at_11_29_36.jpg"
+      },
+      {
+        "id": 7,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/HkcHQvrX/Whats_App_Image_2026_03_19_at_11_29_37.jpg"
+      },
+      {
+        "id": 8,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/HkcHQvry/Whats_App_Image_2026_03_19_at_11_32_55.jpg"
+      },
+      {
+        "id": 9,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/htzg9ZXz/Whats_App_Image_2026_03_19_at_11_32_55_(1).jpg"
+      },
+      {
+        "id": 10,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/K8kFnp1T/Whats_App_Image_2026_03_19_at_11_34_55.jpg"
+      },
+      {
+        "id": 11,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/HkcHQvJD/Whats_App_Image_2026_03_19_at_11_34_56.jpg"
+      },
+      {
+        "id": 12,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/g2XdvtxV/Whats_App_Image_2026_03_19_at_11_34_56_(1).jpg"
+      },
+      {
+        "id": 13,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/x1JYKpXF/Whats_App_Image_2026_03_19_at_11_34_58.jpg"
+      },
+      {
+        "id": 14,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/kg69xY2k/Whats_App_Image_2026_03_19_at_11_34_59.jpg"
+      },
+      {
+        "id": 15,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/YCGk1DvR/Whats_App_Image_2026_03_19_at_11_34_57.jpg"
+      },
+      {
+        "id": 16,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/GmWRzPYB/Whats_App_Image_2026_03_19_at_11_34_59_(1).jpg"
+      },
+      {
+        "id": 17,
+        "name": "Main Door handles",
+        "category": "Main Door handles",
+        "image": "https://i.postimg.cc/s25rLB92/Whats_App_Image_2026_03_19_at_11_35_00.jpg"
+      },
+      {
+        "id": 18,
+        "name": "Buffers",
+        "category": "Buffers",
+        "image": "https://i.postimg.cc/pLwvkQ8t/Whats_App_Image_2026_03_19_at_11_35_56.jpg"
+      },
+      {
+        "id": 19,
+        "name": "Buffers",
+        "category": "Buffers",
+        "image": "https://i.postimg.cc/HLbgNJ4W/Whats_App_Image_2026_03_19_at_11_35_57.jpg"
+      },
+      {
+        "id": 20,
+        "name": "Buffers",
+        "category": "Buffers",
+        "image": "https://i.postimg.cc/qvPrQcnM/Whats_App_Image_2026_03_19_at_11_35_57_(1).jpg"
+      },
+      {
+        "id": 21,
+        "name": "Door silencer",
+        "category": "Door silencer",
+        "image": "https://i.postimg.cc/Xv9bPZc7/Whats_App_Image_2026_03_19_at_11_36_58.jpg"
+      },
+      {
+        "id": 22,
+        "name": "Door silencer",
+        "category": "Door silencer",
+        "image": "https://i.postimg.cc/SKchPX7J/Whats_App_Image_2026_03_19_at_11_36_59.jpg"
+      },
+        {
+          "id": 23,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/KvnLNfCB/Whats-App-Image-2026-03-19-at-11-58-34.jpg"
+        },
+        {
+          "id": 24,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/jdzNXcB7/Whats-App-Image-2026-03-19-at-11-58-34-(1).jpg"
+        },
+        {
+          "id": 25,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/tChP5k8N/Whats-App-Image-2026-03-19-at-11-58-35.jpg"
+        },
+        {
+          "id": 26,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/WbMrn8xZ/Whats-App-Image-2026-03-19-at-11-58-35-(1).jpg"
+        },
+        {
+          "id": 27,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/FsjcZpwZ/Whats-App-Image-2026-03-19-at-12-02-25.jpg"
+        },
+        {
+          "id": 28,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/GhkYQK6z/Whats-App-Image-2026-03-19-at-12-02-26.jpg"
+        },
+        {
+          "id": 29,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/PrmZ4y02/Whats-App-Image-2026-03-19-at-12-02-27.jpg"
+        },
+        {
+          "id": 30,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/4Nzt5Pj8/Whats-App-Image-2026-03-19-at-12-02-28.jpg"
+        },
+        {
+          "id": 31,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/tChP5k8m/Whats-App-Image-2026-03-19-at-12-02-29.jpg"
+        },
+        {
+          "id": 32,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/Sxk9t8pT/Whats-App-Image-2026-03-19-at-12-02-31.jpg"
+        },
+        {
+          "id": 33,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/RZ4tbfzD/Whats-App-Image-2026-03-19-at-12-02-33.jpg"
+        },
+        {
+          "id": 34,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/13sFY6ZY/Whats-App-Image-2026-03-19-at-12-02-33-(1).jpg"
+        },
+        {
+          "id": 35,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/CxS86DVX/Whats-App-Image-2026-03-19-at-12-02-34.jpg"
+        },
+        {
+          "id": 36,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/YCMFygwT/Whats-App-Image-2026-03-19-at-12-02-35.jpg"
+        },
+        {
+          "id": 37,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/VkmtHM8P/Whats-App-Image-2026-03-19-at-12-02-36.jpg"
+        },
+        {
+          "id": 38,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/jStfkNbt/Whats-App-Image-2026-03-19-at-12-02-37.jpg"
+        },
+        {
+          "id": 39,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/kgqSh8m3/Whats-App-Image-2026-03-19-at-12-02-37-(1).jpg"
+        },
+        {
+          "id": 40,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/DwnGYsT7/Whats-App-Image-2026-03-19-at-12-02-39.jpg"
+        },
+        {
+          "id": 41,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/6ptZ1RXK/Whats-App-Image-2026-03-19-at-12-02-39-(1).jpg"
+        },
+        {
+          "id": 42,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/zG8hPWrf/Whats-App-Image-2026-03-19-at-12-02-40.jpg"
+        },
+        {
+          "id": 43,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/0yPSHms2/Whats-App-Image-2026-03-19-at-12-02-41.jpg"
+        },
+        {
+          "id": 44,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/htcm3xBj/Whats-App-Image-2026-03-19-at-12-02-41-(1).jpg"
+        },
+        {
+          "id": 45,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/RZdtrFS9/Whats-App-Image-2026-03-19-at-12-02-42.jpg"
+        },
+        {
+          "id": 46,
+          "name": "Mortise Handles",
+          "category": "Mortise Handles",
+          "image": "https://i.postimg.cc/2SGWp6kz/Whats-App-Image-2026-03-19-at-12-02-42-(1).jpg"
+        },
+        {
+            "id": 46,
+            "name": "Main Door handles",
+            "category": "Main Door handles",
+            "image": "https://i.postimg.cc/7Z9KBwjd/Whats-App-Image-2026-03-19-at-12-12-57.jpg,"
+          },
+          {
+            "id": 48,
+            "name": "Sofa Legs",
+            "category": "Sofa Legs",
+            "image": "https://i.postimg.cc/L5VPH6t3/Whats-App-Image-2026-03-19-at-12-15-06.jpg"
+          },
+          {
+            "id": 49,
+            "name": "Sofa Legs",
+            "category": "Sofa Legs",
+            "image": "https://i.postimg.cc/3NZGKJXZ/Whats-App-Image-2026-03-19-at-12-15-07.jpg"
+          },
+          {
+            "id": 50,
+            "name": "Sofa Legs",
+            "category": "Sofa Legs",
+            "image": "https://i.postimg.cc/90B9WFdp/Whats-App-Image-2026-03-19-at-12-15-07-(1).jpg"
+          },
+            {
+              "id": 51,
+              "name": "Knobs",
+              "category": "Knobs",
+              "image": "https://i.postimg.cc/YCXCtLJt/Whats-App-Image-2026-03-19-at-12-17-13.jpg"
+            },
+            {
+              "id": 52,
+              "name": "Knobs",
+              "category": "Knobs",
+              "image": "https://i.postimg.cc/Mpspzfhq/Whats-App-Image-2026-03-19-at-12-17-14.jpg"
+            },
+            {
+              "id": 53,
+              "name": "Knobs",
+              "category": "Knobs",
+              "image": "https://i.postimg.cc/W191sqQN/Whats-App-Image-2026-03-19-at-12-17-14-(1).jpg"
+            },
+            {
+              "id": 54,
+              "name": "Knobs",
+              "category": "Knobs",
+              "image": "https://i.postimg.cc/HkWLG9Pr/Whats-App-Image-2026-03-19-at-12-17-14-(2).jpg"
+            },
+            {
+              "id": 55,
+              "name": "Knobs",
+              "category": "Knobs",
+              "image": "https://i.postimg.cc/Xvp7q7bd/Whats-App-Image-2026-03-19-at-12-17-15.jpg"
+            },
+          
+            {
+              "id": 56,
+              "name": "Mortise Locks",
+              "category": "Mortise Locks",
+              "image": "https://i.postimg.cc/XY2YnBTd/Whats-App-Image-2026-03-19-at-12-17-22.jpg"
+            },
+            {
+              "id": 57,
+              "name": "Mortise Locks",
+              "category": "Mortise Locks",
+              "image": "https://i.postimg.cc/52P2fQZB/Whats-App-Image-2026-03-19-at-12-17-22-(1).jpg"
+            },
+          
+            {
+              "id": 58,
+              "name": "Magnet Door Holder",
+              "category": "Magnet Door Holder",
+              "image": "https://i.postimg.cc/bvWYtcYZ/Whats-App-Image-2026-03-19-at-12-17-23.jpg"
+            },
+            {
+              "id": 59,
+              "name": "Magnet Door Holder",
+              "category": "Magnet Door Holder",
+              "image": "https://i.postimg.cc/cLDLdtVh/Whats-App-Image-2026-03-19-at-12-17-23-(1).jpg"
+            },
+            {
+              "id": 60,
+              "name": "Magnet Door Holder",
+              "category": "Magnet Door Holder",
+              "image": "https://i.postimg.cc/s2qfhdf3/Whats-App-Image-2026-03-19-at-12-17-23-(10).jpg"
+            },
+            {
+              "id": 61,
+              "name": "Magnet Door Holder",
+              "category": "Magnet Door Holder",
+              "image": "https://i.postimg.cc/Dz8y0yTg/Whats-App-Image-2026-03-19-at-12-17-23-(2).jpg"
+            },
+            {
+              "id": 62,
+              "name": "Magnet Door Holder",
+              "category": "Magnet Door Holder",
+              "image": "https://i.postimg.cc/q7zMqMT5/Whats-App-Image-2026-03-19-at-12-17-23-(3).jpg"
+            },
+            {
+              "id": 63,
+              "name": "Magnet Door Holder",
+              "category": "Magnet Door Holder",
+              "image": "https://i.postimg.cc/d0Lt3tFP/Whats-App-Image-2026-03-19-at-12-17-23-(4).jpg"
+            },
+          
+            {
+              "id": 64,
+              "name": "Brass Dooms & Knockers",
+              "category": "Brass Dooms & Knockers",
+              "image": "https://i.postimg.cc/FK7szsvX/Whats-App-Image-2026-03-19-at-12-17-23-(5).jpg"
+            },
+            {
+              "id": 65,
+              "name": "Brass Dooms & Knockers",
+              "category": "Brass Dooms & Knockers",
+              "image": "https://i.postimg.cc/bvsNrNPh/Whats-App-Image-2026-03-19-at-12-17-23-(6).jpg"
+            },
+            {
+              "id": 66,
+              "name": "Brass Dooms & Knockers",
+              "category": "Brass Dooms & Knockers",
+              "image": "https://i.postimg.cc/CKXMqThW/Whats-App-Image-2026-03-19-at-12-17-23-(7).jpg"
+            },
+            {
+              "id": 67,
+              "name": "Brass Dooms & Knockers",
+              "category": "Brass Dooms & Knockers",
+              "image": "https://i.postimg.cc/SK3QMFQy/Whats-App-Image-2026-03-19-at-12-17-23-(8).jpg"
+            },
+            {
+              "id": 68,
+              "name": "Brass Dooms & Knockers",
+              "category": "Brass Dooms & Knockers",
+              "image": "https://i.postimg.cc/43q49k4f/Whats-App-Image-2026-03-19-at-12-17-23-(9).jpg"
+            },
+                {
+                  "id": 74,
+                  "name": "Knobs",
+                  "category": "Knobs",
+                  "image": "https://i.postimg.cc/gjTbf3wZ/Whats-App-Image-2026-03-19-at-12-33-02.jpg"
+                },
+                {
+                  "id": 75,
+                  "name": "Knobs",
+                  "category": "Knobs",
+                  "image": "https://i.postimg.cc/tRSbZGBD/Whats-App-Image-2026-03-19-at-12-33-02-(1).jpg"
+                },
+                {
+                  "id": 76,
+                  "name": "Knobs",
+                  "category": "Knobs",
+                  "image": "https://i.postimg.cc/BZY3LfmY/Whats-App-Image-2026-03-19-at-12-33-03.jpg"
+                },
+              
+                {
+                  "id": 77,
+                  "name": "Mortise Handles",
+                  "category": "Mortise Handles",
+                  "image": "https://i.postimg.cc/qBbrhH1G/Whats-App-Image-2026-03-19-at-12-33-03-(1).jpg"
+                },
+              
+                {
+                  "id": 78,
+                  "name": "Door silencer",
+                  "category": "Door silencer",
+                  "image": "https://i.postimg.cc/66jK2xHB/Whats-App-Image-2026-03-19-at-12-33-04.jpg"
+                },
+              
+                {
+                  "id": 79,
+                  "name": "Antique Brass",
+                  "category": "Antique Brass",
+                  "image": "https://i.postimg.cc/y6QKgCf8/Whats-App-Image-2026-03-19-at-12-33-04-(1).jpg"
+                },
+                {
+                  "id": 80,
+                  "name": "Antique Brass",
+                  "category": "Antique Brass",
+                  "image": "https://i.postimg.cc/HsrgbvKm/Whats-App-Image-2026-03-19-at-12-33-04-(2).jpg"
+                },
+                {
+                  "id": 81,
+                  "name": "Antique Brass",
+                  "category": "Antique Brass",
+                  "image": "https://i.postimg.cc/YqvHQDV0/Whats-App-Image-2026-03-19-at-12-33-05.jpg"
+                },
+                {
+                  "id": 82,
+                  "name": "Antique Brass",
+                  "category": "Antique Brass",
+                  "image": "https://i.postimg.cc/5NDMgqdY/Whats-App-Image-2026-03-19-at-12-33-06.jpg"
+                },
+                {
+                  "id": 83,
+                  "name": "Antique Brass",
+                  "category": "Antique Brass",
+                  "image": "https://i.postimg.cc/zXyrT2MT/Whats-App-Image-2026-03-19-at-12-33-06-(1).jpg"
+                },
+                {
+                  "id": 84,
+                  "name": "Antique Brass",
+                  "category": "Antique Brass",
+                  "image": "https://i.postimg.cc/YqTwRfKD/Whats-App-Image-2026-03-19-at-12-33-07.jpg"
+                },
+              
+                {
+                  "id": 85,
+                  "name": "Knocks",
+                  "category": "Knocks",
+                  "image": "https://i.postimg.cc/7Yjy9M8S/Whats-App-Image-2026-03-19-at-12-33-07-(1).jpg"
+                },
+                {
+                  "id": 86,
+                  "name": "Knocks",
+                  "category": "Knocks",
+                  "image": "https://i.postimg.cc/28gfGFR0/Whats-App-Image-2026-03-19-at-12-33-07-(2).jpg"
+                },
+                {
+                  "id": 87,
+                  "name": "Knocks",
+                  "category": "Knocks",
+                  "image": "https://i.postimg.cc/8PxV4BQR/Whats-App-Image-2026-03-19-at-12-33-08.jpg"
+                },
+                {
+                  "id": 88,
+                  "name": "Knocks",
+                  "category": "Knocks",
+                  "image": "https://i.postimg.cc/BQRGpc9z/Whats-App-Image-2026-03-19-at-12-33-08-(1).jpg"
+                }
+     ]
+  }

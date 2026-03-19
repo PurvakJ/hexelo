@@ -36,3 +36,18 @@
     transform: rotate(360deg);
   }
 }
+
+/* Add to App.css */
+.App {
+  opacity: 0;
+  animation: fadeInContent 1s ease forwards;
+}
+
+@keyframes fadeInContent {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
