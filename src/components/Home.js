@@ -12,6 +12,9 @@ function Home() {
   const [hoveredCard, setHoveredCard] = useState(null);
   const [currentLeftImage, setCurrentLeftImage] = useState(0);
   const [currentRightImage, setCurrentRightImage] = useState(0);
+  const [currentTopImage, setCurrentTopImage] = useState(0);
+  const [currentBottomImage, setCurrentBottomImage] = useState(0);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   
   const sectionRefs = {
     hero: useRef(null),
@@ -21,6 +24,16 @@ function Home() {
     showcase: useRef(null),
     cta: useRef(null)
   };
+
+  // Check screen size for responsive carousels
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Intersection Observer for scroll animations
   useEffect(() => {
@@ -69,12 +82,19 @@ function Home() {
   // Auto-rotate carousel images
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentLeftImage((prev) => (prev + 1) % carouselImages.length);
-      setCurrentRightImage((prev) => (prev + 2) % carouselImages.length);
+      if (isMobile) {
+        // For mobile, rotate top and bottom carousels
+        setCurrentTopImage((prev) => (prev + 1) % carouselImages.length);
+        setCurrentBottomImage((prev) => (prev + 2) % carouselImages.length);
+      } else {
+        // For desktop, rotate left and right carousels
+        setCurrentLeftImage((prev) => (prev + 1) % carouselImages.length);
+        setCurrentRightImage((prev) => (prev + 2) % carouselImages.length);
+      }
     }, 3000);
 
     return () => clearInterval(interval);
-  }, [carouselImages.length]);
+  }, [carouselImages.length, isMobile]);
 
   // Process products data
   useEffect(() => {
@@ -264,27 +284,59 @@ function Home() {
         <div className="hero-overlay"></div>
         <div className="hero-pattern"></div>
         
-        <div className="hero-carousel-left">
-          {carouselImages.map((img, index) => (
-            <img
-              key={`left-${index}`}
-              src={img}
-              alt={`Hardware product ${index + 1}`}
-              className={`carousel-image ${index === currentLeftImage ? 'active' : ''}`}
-            />
-          ))}
-        </div>
+        {/* Desktop Carousels (left and right) */}
+        {!isMobile && (
+          <>
+            <div className="hero-carousel-left">
+              {carouselImages.map((img, index) => (
+                <img
+                  key={`left-${index}`}
+                  src={img}
+                  alt={`Hardware product ${index + 1}`}
+                  className={`carousel-image ${index === currentLeftImage ? 'active' : ''}`}
+                />
+              ))}
+            </div>
 
-        <div className="hero-carousel-right">
-          {carouselImages.map((img, index) => (
-            <img
-              key={`right-${index}`}
-              src={img}
-              alt={`Hardware product ${index + 1}`}
-              className={`carousel-image ${index === currentRightImage ? 'active' : ''}`}
-            />
-          ))}
-        </div>
+            <div className="hero-carousel-right">
+              {carouselImages.map((img, index) => (
+                <img
+                  key={`right-${index}`}
+                  src={img}
+                  alt={`Hardware product ${index + 1}`}
+                  className={`carousel-image ${index === currentRightImage ? 'active' : ''}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* Mobile Carousels (top and bottom) */}
+        {isMobile && (
+          <>
+            <div className="hero-carousel-top">
+              {carouselImages.map((img, index) => (
+                <img
+                  key={`top-${index}`}
+                  src={img}
+                  alt={`Hardware product ${index + 1}`}
+                  className={`carousel-image ${index === currentTopImage ? 'active' : ''}`}
+                />
+              ))}
+            </div>
+
+            <div className="hero-carousel-bottom">
+              {carouselImages.map((img, index) => (
+                <img
+                  key={`bottom-${index}`}
+                  src={img}
+                  alt={`Hardware product ${index + 1}`}
+                  className={`carousel-image ${index === currentBottomImage ? 'active' : ''}`}
+                />
+              ))}
+            </div>
+          </>
+        )}
         
         <div className="container hero-content">
           <span className="hero-badge">Serving Since 2000 • Registered 2018</span>
