@@ -1,4 +1,4 @@
-// components/Home.js
+// components/Home.js - Updated with 10 featured products and Door Silencer removed
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
@@ -128,7 +128,7 @@ function Home() {
     return () => clearInterval(interval);
   }, [carouselImages.length, isMobile]);
 
-  // Process products data from new JSON structure
+  // Process products data - Show only 10 featured products and exclude Door Silencer
   useEffect(() => {
     const loadProducts = async () => {
       setTimeout(() => {
@@ -145,50 +145,45 @@ function Home() {
         
         setCategoryProducts(categories);
         
-        // Get featured products - one from each major category
+        // Define major categories - EXCLUDING Door Silencer
         const majorCategories = [
           'Main Door handles',
           'Mortise Handles',
           'Knobs',
           'Knocks',
           'Brass Dooms & Knockers',
-          'Door silencer',
           'Buffers',
           'Magnet Door Holder',
           'Mortise Locks',
           'Antique Brass',
-          'Sofa Legs',
-          'Brass Mortise Handles',
-          'Curtains Bracket',
-          'Door closer',
-          'Telescopy channels'
+          'Sofa Legs'
         ];
 
         const featured = [];
+        
+        // Get one product from each major category (excluding Door Silencer)
         majorCategories.forEach(category => {
-          if (categories[category] && categories[category].length > 0) {
-            // Add first product from each category
+          if (categories[category] && categories[category].length > 0 && featured.length < 10) {
             featured.push(categories[category][0]);
-            
-            // If category has multiple products, add a second one to reach 20 total
-            if (categories[category].length > 1 && featured.length < 20) {
-              featured.push(categories[category][1]);
-            }
           }
         });
 
-        // If we still need more products, add from categories with many products
-        if (featured.length < 20) {
-          Object.keys(categories).forEach(category => {
-            if (categories[category].length > 2 && featured.length < 20) {
-              for (let i = 2; i < Math.min(categories[category].length, 20 - featured.length + 2); i++) {
-                featured.push(categories[category][i]);
-              }
+        // If we still need more products to reach 10, add from other categories
+        // but still exclude Door Silencer
+        if (featured.length < 10) {
+          const otherCategories = Object.keys(categories).filter(cat => 
+            !majorCategories.includes(cat) && 
+            cat !== 'Door silencer' // Explicitly exclude Door Silencer
+          );
+          
+          for (let cat of otherCategories) {
+            if (categories[cat] && categories[cat].length > 0 && featured.length < 10) {
+              featured.push(categories[cat][0]);
             }
-          });
+          }
         }
 
-        setFeaturedProducts(featured.slice(0, 20));
+        setFeaturedProducts(featured.slice(0, 10));
         setLoading(false);
       }, 500);
     };
@@ -251,7 +246,7 @@ function Home() {
       }
     });
 
-    // Define icons for categories
+    // Define icons for categories - Door Silencer is still shown in categories section
     const categoryIcons = {
       'Main Door handles': '🚪',
       'Mortise Handles': '🔐',
@@ -536,7 +531,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Featured Products Section */}
+      {/* Featured Products Section - Now showing only 10 products */}
       <section 
         ref={sectionRefs.products} 
         className={`section featured-section ${visibleSections.products ? 'zoom-in' : ''}`}
@@ -552,7 +547,7 @@ function Home() {
 
           {loading ? (
             <div className="products-skeleton">
-              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20].map((n) => (
+              {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                 <div key={n} className="skeleton-card">
                   <div className="skeleton-image"></div>
                   <div className="skeleton-content">
@@ -563,7 +558,7 @@ function Home() {
               ))}
             </div>
           ) : (
-            <div className="products-grid">
+            <div className="products-grid" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
               {featuredProducts.map((product, index) => (
                 <div 
                   key={product.id} 
