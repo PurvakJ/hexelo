@@ -819,6 +819,9 @@ body {
 }
 
 @media (max-width: 480px) {
+  .logo{
+    margin-top: 50px;
+  }
   .sidebar {
     width: 100%;
     max-width: 300px;

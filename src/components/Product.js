@@ -162,35 +162,7 @@ function Product() {
         </div>
       </section>
 
-      {/* Mobile Category Filter - Always visible on mobile */}
-      {isMobile && (
-        <section className="mobile-filters-section">
-          <div className="container">
-            <div className="categories-wrapper mobile">
-              <div className="categories-scroll">
-                {categories.map(category => (
-                  <button
-                    key={category}
-                    className={`category-chip ${selectedCategory === category ? 'active' : ''}`}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    {category}
-                    {category !== 'All' && (
-                      <span className="category-count">
-                        ({productsData.products.filter(p => p.category === category).length})
-                      </span>
-                    )}
-                  </button>
-                ))}
-              </div>
-            </div>
-            
-            <div className="results-info mobile">
-              <p>Showing all {sortedProducts.length} products</p>
-            </div>
-          </div>
-        </section>
-      )}
+
 
       {/* Filters Section - Hidden on Mobile */}
       {!isMobile && (
