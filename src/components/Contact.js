@@ -16,14 +16,14 @@ function Contact() {
         phone2: '+91 95308 22202',
         phone2Whatsapp: false,
         email: 'gghardware2023@gmail.com',
-        map: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3445.123456789012!2d74.945678!3d30.234567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391234567890abcd%3A0x1234567890abcdef!2sBathinda!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin',
+        map: 'https://www.google.com/maps/embed?pb=!1m16!1m12!1m3!1d6895.920790404763!2d74.92948289357908!3d30.20967780000001!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!2m1!1sBehind%20Kikar%20Bazar%2C%20Gali%20Singh%20Sabha%20Gurudwara%2C%20Bathinda%2C%20Punjab%20-%20151005!5e0!3m2!1sen!2sin!4v1774023628386!5m2!1sen!2sin',
         hours: 'Mon-Sat: 9:00 AM - 8:00 PM, Sun: Closed'
       }
     ],
     socialMedia: [
       {
         platform: 'WhatsApp',
-        link: 'https://wa.me/919774742103?text=Hello%20GG%20Hardware%2C%20I%20have%20a%20query%20about%20your%20products.',
+        link: 'https://wa.me/919774742103?text=Hello%20GG%20Hardware%2C%20I%20would%20like%20to%20know%20more%20about%20your%20products.',
         icon: FaWhatsapp,
         username: '+91 97797 42103',
         color: '#25D366'
@@ -156,8 +156,7 @@ function Contact() {
       </section>
 
       {/* Locations Section */}
-      <section 
-      >
+      <section>
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Where to Find Us</span>
@@ -199,16 +198,18 @@ function Contact() {
         <div className="container">
           <div className="map-container">
             <iframe
-              title="Bathinda Location"
+              title="Bathinda Location - GG Hardware"
               src={businessInfo.locations[0].map}
               width="100%"
-              height="300"
+              height="450"
               style={{ border: 0 }}
               allowFullScreen=""
               loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
             ></iframe>
             <div className="map-overlay">
-              <h4><MdLocationOn /> HEXELO - Bathinda</h4>
+              <h4><MdLocationOn /> GG Hardware - Bathinda</h4>
+              <p className="map-address">{businessInfo.locations[0].address}</p>
               <div className="map-buttons">
                 <button 
                   onClick={() => handleWhatsAppClick(businessInfo.locations[0].phone, '', true)}
@@ -265,7 +266,7 @@ function Contact() {
         </div>
       </section>
 
-      {/* Contact Information Footer */}
+
     </div>
   );
 }
