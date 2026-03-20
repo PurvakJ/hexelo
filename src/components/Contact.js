@@ -57,7 +57,7 @@ function Contact() {
       alert('This number is not available on WhatsApp. Please call us directly at ' + phone);
       return;
     }
-    const defaultMessage = 'Hello GG Hardware, I would like to know more about your products.';
+    const defaultMessage = 'Hello HEXELO Team, I would like to know more about your products.';
     const whatsappUrl = `https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message || defaultMessage)}`;
     window.open(whatsappUrl, '_blank');
   };
