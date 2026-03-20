@@ -1,4 +1,4 @@
-// components/Home.js - Updated with 10 featured products and only 4 categories
+// components/Home.js - Updated with 10 featured products, only 4 categories, and mobile images
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
@@ -19,6 +19,24 @@ function Home() {
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);
+  
+  // Featured images array with the new images
+  const featuredImages = [
+    'https://i.postimg.cc/FRj1M26X/Whats-App-Image-2026-03-19-at-11-34-57-removebg-preview.png',
+    'https://i.postimg.cc/FFPG1jLR/Whats-App-Image-2026-03-19-at-20-48-01.jpg',
+
+    'https://i.postimg.cc/CKXMqThW/Whats-App-Image-2026-03-19-at-12-17-23-7.jpg',
+    'https://i.postimg.cc/4ySRrpKC/Whats-App-Image-2026-03-19-at-12-32-59-1.jpg',
+
+    'https://i.postimg.cc/jdgN4nJS/Whats-App-Image-2026-03-19-at-12-33-08-removebg-preview.png',
+
+    'https://i.postimg.cc/vBWDJpKY/Whats-App-Image-2026-03-19-at-12-17-22-removebg-preview.png',
+    'https://i.postimg.cc/bvWYtcYZ/Whats-App-Image-2026-03-19-at-12-17-23.jpg',
+    'https://i.postimg.cc/YCMFygwT/Whats-App-Image-2026-03-19-at-12-02-35.jpg',
+    'https://i.postimg.cc/RVsfLJn0/Whats-App-Image-2026-03-19-at-12-33-05-removebg-preview-copy.png',
+
+    'https://i.postimg.cc/L5VPH6t3/Whats-App-Image-2026-03-19-at-12-15-06.jpg'
+  ];
   
   const sectionRefs = {
     hero: useRef(null),
@@ -78,7 +96,7 @@ function Home() {
         });
       },
       { 
-        threshold: 0.3,
+        threshold: 0.1,
         rootMargin: '0px'
       }
     );
@@ -112,6 +130,10 @@ function Home() {
     'https://i.postimg.cc/gknshnV4/Whats-App-Image-2026-03-19-at-11-34-55-removebg-preview.png',
     'https://i.postimg.cc/Wbh8ZhGk/Whats-App-Image-2026-03-19-at-11-34-57-removebg-preview.png'
   ];
+
+  // Mobile decorative images
+  const mobileTopImage = 'https://i.postimg.cc/FFPG1jLR/Whats_App_Image_2026_03_19_at_20_48_01.jpg';
+  const mobileBottomImage = 'https://i.postimg.cc/1RWM4pqq/Whats_App_Image_2026_03_19_at_20_48_03_(1).jpg';
 
   // Auto-rotate carousel images
   useEffect(() => {
@@ -164,7 +186,12 @@ function Home() {
         // Get one product from each major category (excluding Door Silencer)
         majorCategories.forEach(category => {
           if (categories[category] && categories[category].length > 0 && featured.length < 10) {
-            featured.push(categories[category][0]);
+            const product = categories[category][0];
+            // Override the product image with a featured image if available
+            if (featured.length < featuredImages.length) {
+              product.image = featuredImages[featured.length];
+            }
+            featured.push(product);
           }
         });
 
@@ -178,7 +205,12 @@ function Home() {
           
           for (let cat of otherCategories) {
             if (categories[cat] && categories[cat].length > 0 && featured.length < 10) {
-              featured.push(categories[cat][0]);
+              const product = categories[cat][0];
+              // Override the product image with a featured image if available
+              if (featured.length < featuredImages.length) {
+                product.image = featuredImages[featured.length];
+              }
+              featured.push(product);
             }
           }
         }
@@ -309,6 +341,29 @@ function Home() {
         <div className="hero-overlay"></div>
         <div className="hero-pattern"></div>
         
+        {/* Mobile Decorative Images - Above and Below Carousel */}
+        {isMobile && (
+          <>
+            <div className="mobile-decorative-top">
+              <img 
+                src={mobileTopImage} 
+                alt="Decorative pattern top" 
+                className="mobile-decorative-image"
+                loading="lazy"
+              />
+            </div>
+            
+            <div className="mobile-decorative-bottom">
+              <img 
+                src={mobileBottomImage} 
+                alt="Decorative pattern bottom" 
+                className="mobile-decorative-image"
+                loading="lazy"
+              />
+            </div>
+          </>
+        )}
+        
         {/* Desktop Carousels (left and right) */}
         {!isMobile && (
           <>
@@ -319,6 +374,7 @@ function Home() {
                   src={img}
                   alt={`Hardware product ${index + 1}`}
                   className={`carousel-image ${index === currentLeftImage ? 'active' : ''}`}
+                  loading="lazy"
                 />
               ))}
             </div>
@@ -330,6 +386,7 @@ function Home() {
                   src={img}
                   alt={`Hardware product ${index + 1}`}
                   className={`carousel-image ${index === currentRightImage ? 'active' : ''}`}
+                  loading="lazy"
                 />
               ))}
             </div>
@@ -346,6 +403,7 @@ function Home() {
                   src={img}
                   alt={`Hardware product ${index + 1}`}
                   className={`carousel-image ${index === currentTopImage ? 'active' : ''}`}
+                  loading="lazy"
                 />
               ))}
             </div>
@@ -357,6 +415,7 @@ function Home() {
                   src={img}
                   alt={`Hardware product ${index + 1}`}
                   className={`carousel-image ${index === currentBottomImage ? 'active' : ''}`}
+                  loading="lazy"
                 />
               ))}
             </div>
@@ -430,7 +489,7 @@ function Home() {
             {features.map((feature, index) => (
               <div 
                 key={index} 
-                className="feature-card"
+                className={`feature-card ${visibleSections.features ? 'animate' : ''}`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="feature-icon-wrapper">
@@ -463,7 +522,7 @@ function Home() {
             {hardwareCategories.map((category, index) => (
               <div 
                 key={index} 
-                className="category-card"
+                className={`category-card ${visibleSections.categories ? 'animate' : ''}`}
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="category-image-wrapper">
@@ -530,7 +589,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Featured Products Section - Now showing only 10 products */}
+      {/* Featured Products Section - Now showing only 10 products with new images */}
       <section 
         ref={sectionRefs.products} 
         className={`section featured-section ${visibleSections.products ? 'zoom-in' : ''}`}
@@ -549,19 +608,15 @@ function Home() {
               {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
                 <div key={n} className="skeleton-card">
                   <div className="skeleton-image"></div>
-                  <div className="skeleton-content">
-                    <div className="skeleton-title"></div>
-                    <div className="skeleton-category"></div>
-                  </div>
                 </div>
               ))}
             </div>
           ) : (
-            <div className="products-grid" style={{ gridTemplateColumns: 'repeat(5, 1fr)' }}>
+            <div className="products-grid">
               {featuredProducts.map((product, index) => (
                 <div 
                   key={product.id} 
-                  className="product-card"
+                  className={`product-card ${visibleSections.products ? 'animate' : ''}`}
                   style={{ animationDelay: `${index * 0.05}s` }}
                   onMouseEnter={() => setHoveredCard(`product-${product.id}`)}
                   onMouseLeave={() => setHoveredCard(null)}
@@ -573,8 +628,6 @@ function Home() {
                       className="product-image"
                       loading="lazy"
                     />
-                    <div className="product-badge">Featured</div>
-                    <span className="product-category-tag">{product.category}</span>
                   </div>
                   <div className="product-info">
                     <h3 className="product-name">{product.name}</h3>
@@ -594,7 +647,7 @@ function Home() {
       </section>
 
       {/* Our Presence Section */}
-      <section className="section brands-section">
+      <section className={`section brands-section ${visibleSections.showcase ? 'fade-in-up' : ''}`}>
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Our Presence</span>
