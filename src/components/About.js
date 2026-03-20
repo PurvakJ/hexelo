@@ -1,7 +1,66 @@
-import React from 'react';
+// components/About.js - Updated with background image slideshow
+import React, { useState, useEffect, useRef } from 'react';
 import './About.css';
 
 function About() {
+  const [currentBackgroundImage, setCurrentBackgroundImage] = useState(0);
+  const [visibleSections, setVisibleSections] = useState({});
+  
+  const sectionRefs = {
+    hero: useRef(null),
+    stats: useRef(null),
+    story: useRef(null),
+    values: useRef(null),
+    partners: useRef(null),
+    locations: useRef(null)
+  };
+
+  // Background images for hero section slideshow
+  const backgroundImages = [
+    'https://i.postimg.cc/MHNtCb8R/close-up-modern-dark-wood-furniture-with-black-handles.jpg',
+    'https://i.postimg.cc/nrjGGjQB/closeup-shot-set-wooden-drawers.jpg',
+    'https://i.postimg.cc/bw3L8h8z/closeup-wooden-boxes-house-home-decor-detail.jpg',
+    'https://i.postimg.cc/nVBkr7pf/door-handle.jpg',
+    'https://i.postimg.cc/RVwbkyNq/light-switches-near-metal-door-handle-stairs-lighting-control.jpg',
+    'https://i.postimg.cc/pLGQ4JYV/side-view-open-drawer-sage-green-kitchen-declutter-mood.jpg',
+    'https://i.postimg.cc/wMgs71c4/wood-door.jpg'
+  ];
+
+  // Auto-rotate background images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBackgroundImage((prev) => (prev + 1) % backgroundImages.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [backgroundImages.length]);
+
+  // Intersection Observer for scroll animations
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setVisibleSections((prev) => ({
+              ...prev,
+              [entry.target.dataset.section]: true
+            }));
+          }
+        });
+      },
+      { threshold: 0.1, rootMargin: '0px' }
+    );
+
+    Object.entries(sectionRefs).forEach(([key, ref]) => {
+      if (ref.current) {
+        ref.current.dataset.section = key;
+        observer.observe(ref.current);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, []);
+
   const partners = [
     {
       name: 'Suresh Goyal',
@@ -64,12 +123,26 @@ function About() {
 
   return (
     <div className="about">
-      {/* Hero Section with Parallax Effect */}
-      <section className="about-hero">
-        <div className="hero-overlay"></div>
-        <div className="hero-pattern"></div>
+      {/* Hero Section with Background Slideshow */}
+      <section 
+        ref={sectionRefs.hero} 
+        className={`about-hero ${visibleSections.hero ? 'fade-in' : ''}`}
+      >
+        {/* Background Slideshow */}
+        <div className="hero-background-slideshow">
+          {backgroundImages.map((img, index) => (
+            <div
+              key={index}
+              className={`hero-background-image ${index === currentBackgroundImage ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${img})` }}
+            />
+          ))}
+          <div className="hero-overlay"></div>
+          <div className="hero-pattern"></div>
+        </div>
+        
         <div className="container hero-content">
-        <span className="hero-badge" style={{ color: '#ffffff' }}>Est. 2000 • Regd. 2018</span>
+          <span className="hero-badge">Est. 2000 • Regd. 2018</span>
           <h1 className="hero-title">
             <span className="hero-title-line">Crafting Excellence Since</span>
             <span className="hero-title-main">
@@ -98,7 +171,10 @@ function About() {
       </section>
 
       {/* Stats Counter Section */}
-      <section className="stats-section">
+      <section 
+        ref={sectionRefs.stats} 
+        className={`stats-section ${visibleSections.stats ? 'fade-in-up' : ''}`}
+      >
         <div className="container">
           <div className="stats-grid">
             {achievements.map((stat, index) => (
@@ -113,7 +189,10 @@ function About() {
       </section>
 
       {/* Story Section with Timeline */}
-      <section className="section story-section">
+      <section 
+        ref={sectionRefs.story} 
+        className={`section story-section ${visibleSections.story ? 'fade-in-up' : ''}`}
+      >
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Our Journey</span>
@@ -139,7 +218,10 @@ function About() {
       </section>
 
       {/* Values Section with Cards */}
-      <section className="section values-section">
+      <section 
+        ref={sectionRefs.values} 
+        className={`section values-section ${visibleSections.values ? 'zoom-in' : ''}`}
+      >
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">What Drives Us</span>
@@ -165,7 +247,10 @@ function About() {
       </section>
 
       {/* Partners Section - Enhanced */}
-      <section className="section partners-section">
+      <section 
+        ref={sectionRefs.partners} 
+        className={`section partners-section ${visibleSections.partners ? 'slide-in' : ''}`}
+      >
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Meet the Leaders</span>
@@ -210,7 +295,10 @@ function About() {
       </section>
 
       {/* Locations Section */}
-      <section className="section locations-section">
+      <section 
+        ref={sectionRefs.locations} 
+        className={`section locations-section ${visibleSections.locations ? 'scale-in' : ''}`}
+      >
         <div className="container">
           <div className="section-header">
             <span className="section-subtitle">Where to Find Us</span>

@@ -20,7 +20,6 @@ function Home() {
   
   // Background images for hero section slideshow
   const backgroundImages = [
-    'https://i.postimg.cc/6Qfj8vCm/blue-kitchen-drawers-half-open-beside-tall-cabinet-organized-space.jpg',
     'https://i.postimg.cc/MHNtCb8R/close-up-modern-dark-wood-furniture-with-black-handles.jpg',
     'https://i.postimg.cc/nrjGGjQB/closeup-shot-set-wooden-drawers.jpg',
     'https://i.postimg.cc/bw3L8h8z/closeup-wooden-boxes-house-home-decor-detail.jpg',

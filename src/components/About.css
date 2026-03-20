@@ -854,3 +854,239 @@
     height: 260px;
   }
 }
+
+/* components/About.css - Updated with background image slideshow and animations */
+/* Add this at the top of your About.css file */
+
+/* Hero Section Background Slideshow */
+.about-hero {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+  padding: 100px 0;
+}
+
+.hero-background-slideshow {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+.hero-background-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 1.5s ease-in-out;
+  z-index: 0;
+}
+
+.hero-background-image.active {
+  opacity: 1;
+  z-index: 1;
+}
+
+.hero-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(135deg, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0.5) 100%);
+  z-index: 2;
+}
+
+.hero-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* Hero Content Text Colors */
+.about-hero .hero-content {
+  position: relative;
+  z-index: 3;
+}
+
+.about-hero .hero-badge,
+.about-hero .hero-title-line,
+.about-hero .hero-letter,
+.about-hero .hero-subtitle,
+.about-hero .hero-description,
+.about-hero .hero-scroll-indicator,
+.about-hero .scroll-text {
+  color: #ffffff !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.about-hero .hero-badge {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border-radius: 30px;
+}
+
+.about-hero .hero-title-main {
+  background: linear-gradient(135deg, #ffffff 0%, #ffd700 50%, #ffffff 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent !important;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.about-hero .hero-title-line,
+.about-hero .hero-letter,
+.about-hero .hero-subtitle {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.6), 0 0 10px rgba(0, 0, 0, 0.3);
+}
+
+.about-hero .hero-description {
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.6);
+}
+
+.about-hero .scroll-arrow {
+  border-right: 2px solid #ffffff;
+  border-bottom: 2px solid #ffffff;
+  text-shadow: 0 0 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+/* Animation Classes */
+.fade-in {
+  animation: fadeIn 1s ease forwards;
+}
+
+.fade-in-up {
+  animation: fadeInUp 1s ease forwards;
+}
+
+.slide-in {
+  animation: slideIn 1s ease forwards;
+}
+
+.zoom-in {
+  animation: zoomIn 1s ease forwards;
+}
+
+.scale-in {
+  animation: scaleIn 1s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Ensure sections start invisible */
+.about-hero,
+.stats-section,
+.story-section,
+.values-section,
+.partners-section,
+.locations-section {
+  opacity: 0;
+}
+
+/* When sections become visible through intersection observer */
+.about-hero.fade-in,
+.stats-section.fade-in-up,
+.story-section.fade-in-up,
+.values-section.zoom-in,
+.partners-section.slide-in,
+.locations-section.scale-in {
+  opacity: 1;
+}
+
+/* Responsive adjustments for hero section */
+@media (max-width: 768px) {
+  .about-hero {
+    min-height: 70vh;
+    padding: 80px 0;
+  }
+  
+  .about-hero .hero-content {
+    background: transparent !important;
+  }
+  
+  .about-hero .hero-badge,
+  .about-hero .hero-feature {
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .about {
+    margin-top: -100px;
+  }
+  
+  .about-hero {
+    min-height: 60vh;
+    height: 700px;
+    padding: 60px 0;
+  }
+}
