@@ -1,4 +1,4 @@
-// components/Home.js - Updated with 10 featured products, only 4 categories, and mobile images
+// components/Home.js - Updated with background image slideshow instead of carousels
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
@@ -11,32 +11,55 @@ function Home() {
   const [loading, setLoading] = useState(true);
   const [visibleSections, setVisibleSections] = useState({});
   const [hoveredCard, setHoveredCard] = useState(null);
-  const [currentLeftImage, setCurrentLeftImage] = useState(0);
-  const [currentRightImage, setCurrentRightImage] = useState(0);
-  const [currentTopImage, setCurrentTopImage] = useState(0);
-  const [currentBottomImage, setCurrentBottomImage] = useState(0);
+  const [currentBackgroundImage, setCurrentBackgroundImage] = useState(0);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isVideoPlaying, setIsVideoPlaying] = useState(false);
+  const [isVideoMuted, setIsVideoMuted] = useState(true);
   const videoRef = useRef(null);
   const videoSectionRef = useRef(null);
   
-  // Featured images array with the new images
-  const featuredImages = [
-    'https://i.postimg.cc/FRj1M26X/Whats-App-Image-2026-03-19-at-11-34-57-removebg-preview.png',
-    'https://i.postimg.cc/FFPG1jLR/Whats-App-Image-2026-03-19-at-20-48-01.jpg',
-
-    'https://i.postimg.cc/CKXMqThW/Whats-App-Image-2026-03-19-at-12-17-23-7.jpg',
-    'https://i.postimg.cc/4ySRrpKC/Whats-App-Image-2026-03-19-at-12-32-59-1.jpg',
-
-    'https://i.postimg.cc/jdgN4nJS/Whats-App-Image-2026-03-19-at-12-33-08-removebg-preview.png',
-
-    'https://i.postimg.cc/vBWDJpKY/Whats-App-Image-2026-03-19-at-12-17-22-removebg-preview.png',
-    'https://i.postimg.cc/bvWYtcYZ/Whats-App-Image-2026-03-19-at-12-17-23.jpg',
-    'https://i.postimg.cc/YCMFygwT/Whats-App-Image-2026-03-19-at-12-02-35.jpg',
-    'https://i.postimg.cc/RVsfLJn0/Whats-App-Image-2026-03-19-at-12-33-05-removebg-preview-copy.png',
-
-    'https://i.postimg.cc/L5VPH6t3/Whats-App-Image-2026-03-19-at-12-15-06.jpg'
+  // Background images for hero section slideshow
+  const backgroundImages = [
+    'https://i.postimg.cc/6Qfj8vCm/blue-kitchen-drawers-half-open-beside-tall-cabinet-organized-space.jpg',
+    'https://i.postimg.cc/MHNtCb8R/close-up-modern-dark-wood-furniture-with-black-handles.jpg',
+    'https://i.postimg.cc/nrjGGjQB/closeup-shot-set-wooden-drawers.jpg',
+    'https://i.postimg.cc/bw3L8h8z/closeup-wooden-boxes-house-home-decor-detail.jpg',
+    'https://i.postimg.cc/nVBkr7pf/door-handle.jpg',
+    'https://i.postimg.cc/RVwbkyNq/light-switches-near-metal-door-handle-stairs-lighting-control.jpg',
+    'https://i.postimg.cc/pLGQ4JYV/side-view-open-drawer-sage-green-kitchen-declutter-mood.jpg',
+    'https://i.postimg.cc/wMgs71c4/wood-door.jpg'
   ];
+  
+  // Featured images array - Using actual product images from JSON
+  const featuredImages = [
+    'https://i.postimg.cc/XYG3w1rB/Whats-App-Image-2026-03-19-at-11-29-35.jpg', // Main door handle
+    'https://i.postimg.cc/0yPSHms2/Whats_App_Image_2026_03_19_at_12_02_41.jpg', // Mortise Handle
+    'https://i.postimg.cc/YCXCtLJt/Whats-App-Image-2026-03-19-at-12-17-13.jpg', // Knob
+    'https://i.postimg.cc/jdgN4nJS/Whats_App_Image_2026_03_19_at_12_33_08_removebg_preview.png', // Door Knock
+    'https://i.postimg.cc/RVsfLJn0/Whats_App_Image_2026_03_19_at_12_33_05_removebg_preview_copy.png', // Antique Brass
+    'https://i.postimg.cc/L5VPH6t3/Whats-App-Image-2026-03-19-at-12-15-06.jpg', // Sofa Leg
+    'https://i.postimg.cc/XY2YnBTd/Whats-App-Image-2026-03-19-at-12-17-22.jpg', // Magnet Door holder
+    'https://i.postimg.cc/FFPG1jLR/Whats-App-Image-2026-03-19-at-20-48-01.jpg', // Brass Mortise Handle
+    'https://i.postimg.cc/qMZ46Hvs/Whats-App-Image-2026-03-19-at-11-26-18.jpg', // Main door handle
+    'https://i.postimg.cc/y6fnWFSt/Whats_App_Image_2026_03_19_at_18_35_49.jpg' // Curtains Bracket
+  ];
+  
+  // Hardcoded category images with specific URLs
+  const categoryImages = {
+    'Mortise Handles': 'https://i.postimg.cc/FsjcZpwZ/Whats-App-Image-2026-03-19-at-12-02-25.jpg',
+    'Main door handles': 'https://i.postimg.cc/XYG3w1rB/Whats-App-Image-2026-03-19-at-11-29-35.jpg',
+    'Knobs': 'https://i.postimg.cc/YCXCtLJt/Whats-App-Image-2026-03-19-at-12-17-13.jpg',
+    'Magnet Door holder': 'https://i.postimg.cc/XY2YnBTd/Whats-App-Image-2026-03-19-at-12-17-22.jpg',
+    'Door Knocks': 'https://i.postimg.cc/7Yjy9M8S/Whats-App-Image-2026-03-19-at-12-33-07-1.jpg',
+    'Antique Brass': 'https://i.postimg.cc/y6QKgCf8/Whats-App-Image-2026-03-19-at-12-33-04-1.jpg',
+    'Sofa Legs': 'https://i.postimg.cc/L5VPH6t3/Whats-App-Image-2026-03-19-at-12-15-06.jpg',
+    'Brass Mortise Handles': 'https://i.postimg.cc/FFPG1jLR/Whats-App-Image-2026-03-19-at-20-48-01.jpg',
+    'Key holes': 'https://i.postimg.cc/pLwvkQ8t/Whats-App-Image-2026-03-19-at-11-35-56.jpg',
+    'Curtains Bracket': 'https://i.postimg.cc/y6fnWFSt/Whats_App_Image_2026_03_19_at_18_35_49.jpg',
+    'Door closer': 'https://i.postimg.cc/2jHT34Bs/Whats-App-Image-2026-03-19-at-18-47-06.jpg',
+    'Telescopy channels': 'https://i.postimg.cc/tRrD7hx9/Whats-App-Image-2026-03-19-at-18-48-48.jpg',
+    'Screw': 'https://i.postimg.cc/Rhq0nvfw/Whats-App-Image-2026-03-19-at-18-40-48.jpg'
+  };
   
   const sectionRefs = {
     hero: useRef(null),
@@ -48,7 +71,7 @@ function Home() {
     cta: useRef(null)
   };
 
-  // Check screen size for responsive carousels
+  // Check screen size for responsive design
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -57,6 +80,15 @@ function Home() {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // Auto-rotate background images
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentBackgroundImage((prev) => (prev + 1) % backgroundImages.length);
+    }, 5000); // Change image every 5 seconds
+
+    return () => clearInterval(interval);
+  }, [backgroundImages.length]);
 
   // Intersection Observer for scroll animations and video autoplay
   useEffect(() => {
@@ -74,7 +106,6 @@ function Home() {
           // For video autoplay when section is visible
           if (entry.target.dataset.section === 'video') {
             if (entry.isIntersecting) {
-              // Video section is visible - play video
               if (videoRef.current) {
                 videoRef.current.play()
                   .then(() => {
@@ -86,7 +117,6 @@ function Home() {
                   });
               }
             } else {
-              // Video section is not visible - pause video
               if (videoRef.current && isVideoPlaying) {
                 videoRef.current.pause();
                 setIsVideoPlaying(false);
@@ -111,46 +141,7 @@ function Home() {
     return () => observer.disconnect();
   }, [isVideoPlaying]);
 
-  // Carousel images from the provided URLs
-  const carouselImages = [
-    'https://i.postimg.cc/rmSzBvHX/Whats-App-Image-2026-03-19-at-11-34-55-removebg-preview.png',
-    'https://i.postimg.cc/FRj1M26X/Whats-App-Image-2026-03-19-at-11-34-57-removebg-preview.png',
-    'https://i.postimg.cc/W3MtBQyv/Whats-App-Image-2026-03-19-at-12-02-27-removebg-preview.png',
-    'https://i.postimg.cc/DZqm9tNK/Whats-App-Image-2026-03-19-at-12-02-41-1-removebg-preview.png',
-    'https://i.postimg.cc/vBWDJpKY/Whats-App-Image-2026-03-19-at-12-17-22-removebg-preview.png',
-    'https://i.postimg.cc/gJvrCf7c/Whats-App-Image-2026-03-19-at-12-17-23-8-removebg-preview.png',
-    'https://i.postimg.cc/DwSGjfqJ/Whats-App-Image-2026-03-19-at-11-35-56-removebg-preview.png',
-    'https://i.postimg.cc/y8DRQ6FZ/Whats-App-Image-2026-03-19-at-11-35-57-1-removebg-preview.png',
-    'https://i.postimg.cc/htXmy49j/Whats-App-Image-2026-03-19-at-12-17-13-removebg-preview.png',
-    'https://i.postimg.cc/MpnBPZyG/Whats-App-Image-2026-03-19-at-12-17-15-removebg-preview.png',
-    'https://i.postimg.cc/hPyx1Q7g/Whats-App-Image-2026-03-19-at-12-33-05-removebg-preview.png',
-    'https://i.postimg.cc/RVsfLJn0/Whats-App-Image-2026-03-19-at-12-33-05-removebg-preview-copy.png',
-    'https://i.postimg.cc/BQYDBP16/Whats-App-Image-2026-03-19-at-12-33-08-1-removebg-preview.png',
-    'https://i.postimg.cc/jdgN4nJS/Whats-App-Image-2026-03-19-at-12-33-08-removebg-preview.png',
-    'https://i.postimg.cc/gknshnV4/Whats-App-Image-2026-03-19-at-11-34-55-removebg-preview.png',
-    'https://i.postimg.cc/Wbh8ZhGk/Whats-App-Image-2026-03-19-at-11-34-57-removebg-preview.png'
-  ];
-
-  // Mobile decorative images
-  const mobileTopImage = 'https://i.postimg.cc/FFPG1jLR/Whats_App_Image_2026_03_19_at_20_48_01.jpg';
-  const mobileBottomImage = 'https://i.postimg.cc/1RWM4pqq/Whats_App_Image_2026_03_19_at_20_48_03_(1).jpg';
-
-  // Auto-rotate carousel images
-  useEffect(() => {
-    const interval = setInterval(() => {
-      if (isMobile) {
-        setCurrentTopImage((prev) => (prev + 1) % carouselImages.length);
-        setCurrentBottomImage((prev) => (prev + 2) % carouselImages.length);
-      } else {
-        setCurrentLeftImage((prev) => (prev + 1) % carouselImages.length);
-        setCurrentRightImage((prev) => (prev + 2) % carouselImages.length);
-      }
-    }, 3000);
-
-    return () => clearInterval(interval);
-  }, [carouselImages.length, isMobile]);
-
-  // Process products data - Show only 10 featured products and exclude Door Silencer
+  // Process products data - Show 10 featured products from actual data
   useEffect(() => {
     const loadProducts = async () => {
       setTimeout(() => {
@@ -167,27 +158,27 @@ function Home() {
         
         setCategoryProducts(categories);
         
-        // Define major categories - EXCLUDING Door Silencer
-        const majorCategories = [
-          'Main Door handles',
+        // Define categories to feature (excluding Door silencer)
+        const featuredCategories = [
+          'Main door handles',
           'Mortise Handles',
           'Knobs',
-          'Knocks',
-          'Brass Dooms & Knockers',
-          'Buffers',
-          'Magnet Door Holder',
-          'Mortise Locks',
+          'Door Knocks',
           'Antique Brass',
-          'Sofa Legs'
+          'Sofa Legs',
+          'Magnet Door holder',
+          'Brass Mortise Handles',
+          'Key holes',
+          'Curtains Bracket'
         ];
 
         const featured = [];
         
-        // Get one product from each major category (excluding Door Silencer)
-        majorCategories.forEach(category => {
+        // Get one product from each featured category
+        featuredCategories.forEach(category => {
           if (categories[category] && categories[category].length > 0 && featured.length < 10) {
-            const product = categories[category][0];
-            // Override the product image with a featured image if available
+            const product = { ...categories[category][0] }; // Create a copy to avoid modifying original
+            // Use the corresponding featured image if available
             if (featured.length < featuredImages.length) {
               product.image = featuredImages[featured.length];
             }
@@ -195,18 +186,17 @@ function Home() {
           }
         });
 
-        // If we still need more products to reach 10, add from other categories
-        // but still exclude Door Silencer
+        // If we still need more products, add from other categories (excluding Door silencer)
         if (featured.length < 10) {
           const otherCategories = Object.keys(categories).filter(cat => 
-            !majorCategories.includes(cat) && 
-            cat !== 'Door silencer' // Explicitly exclude Door Silencer
+            !featuredCategories.includes(cat) && 
+            cat !== 'door silencer' &&
+            cat !== 'Door silencer'
           );
           
           for (let cat of otherCategories) {
             if (categories[cat] && categories[cat].length > 0 && featured.length < 10) {
-              const product = categories[cat][0];
-              // Override the product image with a featured image if available
+              const product = { ...categories[cat][0] };
               if (featured.length < featuredImages.length) {
                 product.image = featuredImages[featured.length];
               }
@@ -235,6 +225,13 @@ function Home() {
     }
   };
 
+  const handleVideoMute = () => {
+    if (videoRef.current) {
+      videoRef.current.muted = !isVideoMuted;
+      setIsVideoMuted(!isVideoMuted);
+    }
+  };
+
   const features = [
     { 
       icon: '🔩', 
@@ -258,49 +255,61 @@ function Home() {
     }
   ];
 
+  // Updated categories to use hardcoded images
   const getHardwareCategories = () => {
     const products = productsData.products;
     
-    // Define the 4 categories we want to show
-    const selectedCategories = [
-      'Mortise Handles',
-      'Main Door handles',
-      'Magnet Door Holder',
-      'Brass Mortise Handles'
-    ];
-    
-    // Get only the selected categories with their counts and first image
-    const categoryMap = new Map();
-    
+    // Define the 4 main categories with the most products (excluding Door silencer)
+    const categoryCounts = {};
     products.forEach(product => {
-      if (selectedCategories.includes(product.category)) {
-        if (!categoryMap.has(product.category)) {
-          categoryMap.set(product.category, {
-            name: product.category,
-            count: 1,
-            image: product.image
-          });
-        } else {
-          const cat = categoryMap.get(product.category);
-          cat.count += 1;
-          categoryMap.set(product.category, cat);
-        }
+      if (product.category !== 'door silencer' && product.category !== 'Door silencer') {
+        categoryCounts[product.category] = (categoryCounts[product.category] || 0) + 1;
       }
+    });
+    
+    // Get the top 4 categories by count
+    const topCategories = Object.entries(categoryCounts)
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 4)
+      .map(([category]) => category);
+    
+    // Create category objects with hardcoded images
+    const categoryMap = new Map();
+    topCategories.forEach(category => {
+      // Use hardcoded image from categoryImages object, or fallback to first product image
+      const image = categoryImages[category] || 
+                    (products.find(p => p.category === category)?.image || 
+                    'https://via.placeholder.com/300x300?text=No+Image');
+      
+      categoryMap.set(category, {
+        name: category,
+        count: categoryCounts[category],
+        image: image
+      });
     });
 
     // Define icons for the selected categories
     const categoryIcons = {
-      'Main Door handles': '🚪',
       'Mortise Handles': '🔐',
-      'Magnet Door Holder': '🧲',
-      'Brass Mortise Handles': '⚜️'
+      'Main door handles': '🚪',
+      'Knobs': '🔘',
+      'Magnet Door holder': '🧲',
+      'Door Knocks': '🚪',
+      'Antique Brass': '⚜️',
+      'Sofa Legs': '🪑',
+      'Brass Mortise Handles': '⚜️',
+      'Key holes': '🔑',
+      'Curtains Bracket': '🪟',
+      'Door closer': '🚪',
+      'Telescopy channels': '📺',
+      'Screw': '🔩'
     };
 
     // Convert map to array and add icons
     return Array.from(categoryMap.values()).map(cat => ({
       ...cat,
       icon: categoryIcons[cat.name] || '🔩'
-    })).sort((a, b) => b.count - a.count); // Sort by count descending
+    }));
   };
 
   const hardwareCategories = getHardwareCategories();
@@ -333,94 +342,23 @@ function Home() {
 
   return (
     <div className="home">
-      {/* Hero Section */}
+      {/* Hero Section with Background Slideshow */}
       <section 
         ref={sectionRefs.hero} 
         className={`hero-section ${visibleSections.hero ? 'fade-in' : ''}`}
       >
-        <div className="hero-overlay"></div>
-        <div className="hero-pattern"></div>
-        
-        {/* Mobile Decorative Images - Above and Below Carousel */}
-        {isMobile && (
-          <>
-            <div className="mobile-decorative-top">
-              <img 
-                src={mobileTopImage} 
-                alt="Decorative pattern top" 
-                className="mobile-decorative-image"
-                loading="lazy"
-              />
-            </div>
-            
-            <div className="mobile-decorative-bottom">
-              <img 
-                src={mobileBottomImage} 
-                alt="Decorative pattern bottom" 
-                className="mobile-decorative-image"
-                loading="lazy"
-              />
-            </div>
-          </>
-        )}
-        
-        {/* Desktop Carousels (left and right) */}
-        {!isMobile && (
-          <>
-            <div className="hero-carousel-left">
-              {carouselImages.map((img, index) => (
-                <img
-                  key={`left-${index}`}
-                  src={img}
-                  alt={`Hardware product ${index + 1}`}
-                  className={`carousel-image ${index === currentLeftImage ? 'active' : ''}`}
-                  loading="lazy"
-                />
-              ))}
-            </div>
-
-            <div className="hero-carousel-right">
-              {carouselImages.map((img, index) => (
-                <img
-                  key={`right-${index}`}
-                  src={img}
-                  alt={`Hardware product ${index + 1}`}
-                  className={`carousel-image ${index === currentRightImage ? 'active' : ''}`}
-                  loading="lazy"
-                />
-              ))}
-            </div>
-          </>
-        )}
-
-        {/* Mobile Carousels (top and bottom) */}
-        {isMobile && (
-          <>
-            <div className="hero-carousel-top">
-              {carouselImages.map((img, index) => (
-                <img
-                  key={`top-${index}`}
-                  src={img}
-                  alt={`Hardware product ${index + 1}`}
-                  className={`carousel-image ${index === currentTopImage ? 'active' : ''}`}
-                  loading="lazy"
-                />
-              ))}
-            </div>
-
-            <div className="hero-carousel-bottom">
-              {carouselImages.map((img, index) => (
-                <img
-                  key={`bottom-${index}`}
-                  src={img}
-                  alt={`Hardware product ${index + 1}`}
-                  className={`carousel-image ${index === currentBottomImage ? 'active' : ''}`}
-                  loading="lazy"
-                />
-              ))}
-            </div>
-          </>
-        )}
+        {/* Background Slideshow */}
+        <div className="hero-background-slideshow">
+          {backgroundImages.map((img, index) => (
+            <div
+              key={index}
+              className={`hero-background-image ${index === currentBackgroundImage ? 'active' : ''}`}
+              style={{ backgroundImage: `url(${img})` }}
+            />
+          ))}
+          <div className="hero-overlay"></div>
+          <div className="hero-pattern"></div>
+        </div>
         
         <div className="container hero-content">
           <span className="hero-badge">Serving Since 2000 • Registered 2018</span>
@@ -428,11 +366,11 @@ function Home() {
             <span className="hero-title-line">Welcome to</span>
             <span className="hero-title-main">
               <span className="hero-letter">H</span>
-              <span className="hero-letter">e</span>
-              <span className="hero-letter">x</span>
-              <span className="hero-letter">e</span>
-              <span className="hero-letter">l</span>
-              <span className="hero-letter">o</span>
+              <span className="hero-letter">E</span>
+              <span className="hero-letter">X</span>
+              <span className="hero-letter">E</span>
+              <span className="hero-letter">L</span>
+              <span className="hero-letter">O</span>
             </span>
           </h1>
           <p className="hero-subtitle">Premium Hardware Solutions</p>
@@ -504,7 +442,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Categories Section - Now showing only 4 categories */}
+      {/* Categories Section - Showing top 4 categories with hardcoded images */}
       <section 
         ref={sectionRefs.categories} 
         className={`section categories-section ${visibleSections.categories ? 'slide-in' : ''}`}
@@ -518,7 +456,7 @@ function Home() {
             </p>
           </div>
 
-          <div className="categories-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
+          <div className="categories-grid" style={{ gridTemplateColumns: `repeat(${hardwareCategories.length}, 1fr)` }}>
             {hardwareCategories.map((category, index) => (
               <div 
                 key={index} 
@@ -526,7 +464,12 @@ function Home() {
                 style={{ animationDelay: `${index * 0.1}s` }}
               >
                 <div className="category-image-wrapper">
-                  <img src={category.image} alt={category.name} className="category-image" loading="lazy" />
+                  <img 
+                    src={category.image} 
+                    alt={category.name} 
+                    className="category-image" 
+                    loading="lazy"
+                  />
                   <div className="category-overlay"></div>
                 </div>
                 <div className="category-content">
@@ -544,7 +487,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Video Showcase Section - with autoplay on view */}
+      {/* Video Showcase Section */}
       <section 
         ref={sectionRefs.video} 
         className={`section video-showcase-section ${visibleSections.video ? 'fade-in-up' : ''}`}
@@ -565,7 +508,7 @@ function Home() {
                 src={companyReel}
                 className="video-player"
                 loop
-                muted
+                muted={isVideoMuted}
                 playsInline
                 poster="https://images.unsplash.com/photo-1558005137-4ce5c84b1b1b?w=1200&h=675&fit=crop"
               />
@@ -580,6 +523,15 @@ function Home() {
                 <h3 className="video-title">Hexelo Premium Hardware</h3>
                 <p className="video-subtitle">Quality that speaks for itself</p>
               </div>
+              
+              {/* Mute/Unmute Button */}
+              <button 
+                className={`video-mute-button ${isVideoPlaying ? 'visible' : ''}`}
+                onClick={handleVideoMute}
+                aria-label={isVideoMuted ? 'Unmute video' : 'Mute video'}
+              >
+                {isVideoMuted ? '🔇' : '🔊'}
+              </button>
             </div>
             <div className="video-caption">
               <p>Discover the finest collection of door handles, knobs, and architectural hardware from Hexelo. 
@@ -589,7 +541,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Featured Products Section - Now showing only 10 products with new images */}
+      {/* Featured Products Section - Showing 10 featured products from actual data */}
       <section 
         ref={sectionRefs.products} 
         className={`section featured-section ${visibleSections.products ? 'zoom-in' : ''}`}

@@ -10,7 +10,7 @@ const Catalog = () => {
   
   // Array of catalog images
   const catalogImages = [
-    'https://i.postimg.cc/kgPjd7Sy/TRIONE-MORTISE-CATALOGUE-2025-(C)-00.jpg',
+    'https://i.postimg.cc/bvyxZ26r/Gemini-Generated-Image-dzjo45dzjo45dzjo.png',
     'https://i.postimg.cc/T3vkXTbq/TRIONE-MORTISE-CATALOGUE-2025-(C)-01.jpg',
     'https://i.postimg.cc/dVcWKJCG/TRIONE-MORTISE-CATALOGUE-2025-(C)-02.jpg',
     'https://i.postimg.cc/3xQLH3GF/TRIONE-MORTISE-CATALOGUE-2025-(C)-03.jpg',
@@ -61,7 +61,7 @@ const Catalog = () => {
     'https://i.postimg.cc/k5fw88pz/TRIONE-MORTISE-CATALOGUE-2025-(C)-48.jpg',
     'https://i.postimg.cc/zBv7kBsp/TRIONE-MORTISE-CATALOGUE-2025-(C)-49.jpg',
     'https://i.postimg.cc/yNvn99b2/TRIONE-MORTISE-CATALOGUE-2025-(C)-50.jpg',
-    'https://i.postimg.cc/9M0bBM6x/TRIONE-MORTISE-CATALOGUE-2025-(C)-51.jpg'
+    'https://i.postimg.cc/0ydG5CCD/Gemini-Generated-Image-s94zjss94zjss94z.png'
   ];
 
   // Handle resize
@@ -123,7 +123,7 @@ const Catalog = () => {
 
   // Handle PDF download
   const handleDownload = () => {
-    const pdfUrl = 'https://drive.google.com/uc?export=download&id=1cXxH6zAT5gCIJlmJHygqpxiskUgr87X7';
+    const pdfUrl = 'https://drive.google.com/file/d/1c2I0y8WvH9zcqtGa71NdEAYAUEeJ4WSg/view?usp=sharing';
     window.open(pdfUrl, '_blank');
   };
 
