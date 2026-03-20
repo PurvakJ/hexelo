@@ -31,16 +31,18 @@ function Home() {
   
   // Featured images array - Using actual product images from JSON
   const featuredImages = [
-    'https://i.postimg.cc/XYG3w1rB/Whats-App-Image-2026-03-19-at-11-29-35.jpg', // Main door handle
-    'https://i.postimg.cc/0yPSHms2/Whats_App_Image_2026_03_19_at_12_02_41.jpg', // Mortise Handle
-    'https://i.postimg.cc/YCXCtLJt/Whats-App-Image-2026-03-19-at-12-17-13.jpg', // Knob
-    'https://i.postimg.cc/jdgN4nJS/Whats_App_Image_2026_03_19_at_12_33_08_removebg_preview.png', // Door Knock
-    'https://i.postimg.cc/RVsfLJn0/Whats_App_Image_2026_03_19_at_12_33_05_removebg_preview_copy.png', // Antique Brass
-    'https://i.postimg.cc/L5VPH6t3/Whats-App-Image-2026-03-19-at-12-15-06.jpg', // Sofa Leg
-    'https://i.postimg.cc/XY2YnBTd/Whats-App-Image-2026-03-19-at-12-17-22.jpg', // Magnet Door holder
-    'https://i.postimg.cc/FFPG1jLR/Whats-App-Image-2026-03-19-at-20-48-01.jpg', // Brass Mortise Handle
-    'https://i.postimg.cc/qMZ46Hvs/Whats-App-Image-2026-03-19-at-11-26-18.jpg', // Main door handle
-    'https://i.postimg.cc/y6fnWFSt/Whats_App_Image_2026_03_19_at_18_35_49.jpg' // Curtains Bracket
+    'https://i.postimg.cc/XYG3w1rB/Whats-App-Image-2026-03-19-at-11-29-35.jpg',
+    'https://i.postimg.cc/YCXCtLJt/Whats-App-Image-2026-03-19-at-12-17-13.jpg', // Main door handle
+    'https://i.postimg.cc/jdgN4nJS/Whats_App_Image_2026_03_19_at_12_33_08_removebg_preview.png',
+    'https://i.postimg.cc/DwSGjfqJ/Whats_App_Image_2026_03_19_at_11_35_56_removebg_preview.png', // Mortise Handle
+   // Knob
+ // Door Knock
+    'https://i.postimg.cc/y6fnWFSt/Whats_App_Image_2026_03_19_at_18_35_49.jpg', // Antique Brass
+    'https://i.postimg.cc/fyFRc1jX/Whats-App-Image-2026-03-19-at-18-34-26.jpg', // Sofa Leg
+    'https://i.postimg.cc/bvWYtcYZ/Whats_App_Image_2026_03_19_at_12_17_23.jpg', // Magnet Door holder
+    'https://i.postimg.cc/Sxk9t8pT/Whats_App_Image_2026_03_19_at_12_02_31.jpg', // Brass Mortise Handle
+    'https://i.postimg.cc/CKXMqThW/Whats_App_Image_2026_03_19_at_12_17_23_(7).jpg', // Main door handle
+    'https://i.postimg.cc/hPyx1Q7g/Whats_App_Image_2026_03_19_at_12_33_05_removebg_preview.png' // Curtains Bracket
   ];
   
   // Hardcoded category images with specific URLs
@@ -363,14 +365,14 @@ function Home() {
           <span className="hero-badge">Serving Since 2000 • Registered 2018</span>
           <h1 className="hero-title">
             <span className="hero-title-line">Welcome to</span>
-            <span className="hero-title-main">
-              <span className="hero-letter">H</span>
-              <span className="hero-letter">E</span>
-              <span className="hero-letter">X</span>
-              <span className="hero-letter">E</span>
-              <span className="hero-letter">L</span>
-              <span className="hero-letter">O</span>
-            </span>
+            <span className="hero-title-main" style={{ color: "black" }}>
+  <span className="hero-letter">H</span>
+  <span className="hero-letter">E</span>
+  <span className="hero-letter">X</span>
+  <span className="hero-letter">E</span>
+  <span className="hero-letter">L</span>
+  <span className="hero-letter">O</span>
+</span>
           </h1>
           <p className="hero-subtitle">Premium Hardware Solutions</p>
           <p className="hero-description">
@@ -610,11 +612,11 @@ function Home() {
 
           <div className="brands-grid" style={{ gridTemplateColumns: 'repeat(2, 1fr)' }}>
             <div className="brand-item">
-              <span className="brand-name" style={{ fontSize: '1.5rem' }}>🏛️ Bathinda</span>
+              <span className="brand-name" style={{ fontSize: '1.5rem' }}>🏛️ Bathinda, Punjab</span>
               <p style={{ marginTop: '10px', color: '#666' }}>Main Office & Warehouse</p>
             </div>
             <div className="brand-item">
-              <span className="brand-name" style={{ fontSize: '1.5rem' }}>🏭 Rajkot</span>
+              <span className="brand-name" style={{ fontSize: '1.5rem' }}>🏭 Rajkot, Gujrat</span>
               <p style={{ marginTop: '10px', color: '#666' }}>Branch Office</p>
             </div>
           </div>

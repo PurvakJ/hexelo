@@ -246,54 +246,6 @@ function About() {
         </div>
       </section>
 
-      {/* Partners Section - Enhanced */}
-      <section 
-        ref={sectionRefs.partners} 
-        className={`section partners-section ${visibleSections.partners ? 'slide-in' : ''}`}
-      >
-        <div className="container">
-          <div className="section-header">
-            <span className="section-subtitle">Meet the Leaders</span>
-            <h2 className="section-title">Our <span className="text-highlight">Founding Partners</span></h2>
-            <p className="section-description">
-              The visionaries behind Hexelo's success, bringing decades of expertise to every interaction
-            </p>
-          </div>
-
-          <div className="partners-grid-enhanced">
-            {partners.map((partner, index) => (
-              <div key={index} className="partner-card">
-                <div className="partner-image-wrapper">
-                  <img 
-                    src={partner.image} 
-                    alt={partner.name}
-                    className="partner-image"
-                    onError={(e) => { e.target.onerror = null; e.target.src='https://via.placeholder.com/400x500?text=' + partner.name; }}
-                  />
-                  <div className="partner-overlay">
-                    <p className="partner-quote">"{partner.quote}"</p>
-                  </div>
-                </div>
-                <div className="partner-info">
-                  <h3 className="partner-name">{partner.name}</h3>
-                  <p className="partner-role">{partner.role}</p>
-                  <div className="partner-details">
-                    <div className="partner-detail">
-                      <span className="detail-icon">⏱️</span>
-                      <span>{partner.experience}</span>
-                    </div>
-                    <div className="partner-detail">
-                      <span className="detail-icon">⚙️</span>
-                      <span>{partner.expertise}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* Locations Section */}
       <section 
         ref={sectionRefs.locations} 
