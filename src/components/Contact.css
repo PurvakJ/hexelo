@@ -170,6 +170,10 @@
 .hero-letter:nth-child(4) { --letter-index: 4; }
 .hero-letter:nth-child(5) { --letter-index: 5; }
 .hero-letter:nth-child(6) { --letter-index: 6; }
+.hero-letter:nth-child(7) { --letter-index: 7; }
+.hero-letter:nth-child(8) { --letter-index: 8; }
+.hero-letter:nth-child(9) { --letter-index: 9; }
+.hero-letter:nth-child(10) { --letter-index: 10; }
 
 @keyframes floatLetter {
   0%, 100% {
@@ -208,7 +212,7 @@
 }
 
 .whatsapp-quick-card::before {
-  content: '📱';
+  content: '💬';
   position: absolute;
   top: -20px;
   right: -20px;
@@ -277,7 +281,7 @@
 
 .social-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 30px;
 }
 
@@ -291,6 +295,7 @@
   border: 1px solid rgba(148, 120, 98, 0.1);
   position: relative;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .social-card::before {
@@ -316,17 +321,18 @@
 }
 
 .social-icon {
-  font-size: 48px;
+  font-size: 56px;
   margin-bottom: 20px;
   transition: transform 0.3s ease;
+  display: inline-block;
 }
 
 .social-card:hover .social-icon {
-  transform: scale(1.1) rotate(360deg);
+  transform: scale(1.1) rotate(5deg);
 }
 
 .social-card h3 {
-  font-size: 20px;
+  font-size: 22px;
   font-weight: 500;
   margin-bottom: 10px;
   font-family: 'Playfair Display', serif;
@@ -343,11 +349,33 @@
   font-size: 14px;
   font-weight: 500;
   transition: all 0.3s ease;
+  display: inline-block;
 }
 
 .social-card:hover .social-link {
   color: var(--social-color);
   letter-spacing: 1px;
+  transform: translateX(5px);
+}
+
+/* Social Media Icon Styles */
+.social-icon.whatsapp-icon {
+  background: linear-gradient(135deg, #25D366, #128C7E);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: none;
+}
+
+.social-icon.instagram-icon {
+  background: linear-gradient(45deg, #f09433, #d62976, #962fbf);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.social-icon.facebook-icon {
+  color: #1877F2;
 }
 
 /* Locations Section */
@@ -357,8 +385,10 @@
 
 .locations-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: 40px;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 .location-card {
@@ -441,7 +471,7 @@
 .phone-numbers {
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
 
 .phone-link {
@@ -453,16 +483,26 @@
   text-align: left;
   padding: 0;
   transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .phone-link:hover {
-  color: #000000;
+  color: #25D366;
   transform: translateX(5px);
 }
 
 .whatsapp-indicator {
   font-size: 11px;
   color: #25D366;
+  margin-left: 5px;
+  font-weight: 500;
+}
+
+.call-indicator {
+  font-size: 11px;
+  color: #666;
   margin-left: 5px;
 }
 
@@ -481,6 +521,7 @@
 .location-actions {
   display: flex;
   gap: 15px;
+  flex-wrap: wrap;
 }
 
 .btn-small {
@@ -498,6 +539,7 @@
   align-items: center;
   gap: 8px;
   text-decoration: none;
+  border-radius: 5px;
 }
 
 .btn-outline:hover {
@@ -515,12 +557,30 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  border-radius: 5px;
 }
 
 .btn-primary:hover {
   background-color: #7a5f4b;
   transform: translateY(-2px);
   box-shadow: 0 5px 15px rgba(148, 120, 98, 0.3);
+}
+
+.btn-secondary {
+  background-color: #666;
+  border: none;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border-radius: 5px;
+}
+
+.btn-secondary:hover {
+  background-color: #555;
+  transform: translateY(-2px);
 }
 
 .btn-icon {
@@ -538,6 +598,7 @@
   border: 1px solid rgba(148, 120, 98, 0.1);
   overflow: hidden;
   height: 300px;
+  border-radius: 10px;
 }
 
 .map-container iframe {
@@ -563,6 +624,7 @@
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   backdrop-filter: blur(5px);
   border: 1px solid rgba(148, 120, 98, 0.2);
+  border-radius: 10px;
 }
 
 .map-overlay h4 {
@@ -571,6 +633,11 @@
   color: #000000;
   font-family: 'Playfair Display', serif;
   margin: 0;
+}
+
+.map-buttons {
+  display: flex;
+  gap: 10px;
 }
 
 /* Hours Banner */
@@ -621,6 +688,7 @@
   font-size: 14px;
   opacity: 0.9;
   line-height: 1.6;
+  margin: 5px 0;
 }
 
 .btn-link {
@@ -644,12 +712,6 @@
 @media (max-width: 1200px) {
   .social-grid {
     grid-template-columns: repeat(2, 1fr);
-  }
-  
-  .locations-grid {
-    grid-template-columns: 1fr;
-    max-width: 600px;
-    margin: 0 auto;
   }
   
   .hours-grid {
@@ -714,6 +776,11 @@
     text-align: center;
   }
   
+  .map-buttons {
+    width: 100%;
+    justify-content: center;
+  }
+  
   .section-subtitle::before,
   .section-subtitle::after {
     display: none;
@@ -767,8 +834,17 @@
   .phone-link {
     text-align: center;
   }
-  .contact{
+  
+  .contact {
     margin-top: -100px;
+  }
+  
+  .social-card {
+    padding: 30px 20px;
+  }
+  
+  .social-icon {
+    font-size: 48px;
   }
 }
 
@@ -795,7 +871,6 @@
 .social-card:nth-child(1) { animation-delay: 0.1s; }
 .social-card:nth-child(2) { animation-delay: 0.2s; }
 .social-card:nth-child(3) { animation-delay: 0.3s; }
-.social-card:nth-child(4) { animation-delay: 0.4s; }
 
 /* Scrollbar Styling */
 ::-webkit-scrollbar {
@@ -828,3 +903,4 @@
     display: none;
   }
 }
+

@@ -365,7 +365,10 @@ function Home() {
           <span className="hero-badge">Serving Since 2000 • Registered 2018</span>
           <h1 className="hero-title">
             <span className="hero-title-line">Welcome to</span>
-            <span className="hero-title-main" style={{ color: "black" }}>
+            <span 
+  className="hero-title-main" 
+  style={{ color: "black", fontFamily: "Montserrat, sans-serif" }}
+>
   <span className="hero-letter">H</span>
   <span className="hero-letter">E</span>
   <span className="hero-letter">X</span>
@@ -672,29 +675,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="container">
-          <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-number">25+</span>
-              <span className="stat-label">Years Experience</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-number">10k+</span>
-              <span className="stat-label">Happy Customers</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-number">{totalProducts}+</span>
-              <span className="stat-label">Hardware Products</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-number">{uniqueCategories}</span>
-              <span className="stat-label">Categories</span>
-            </div>
-          </div>
-        </div>
-      </section>
+
 
       {/* SEO Section */}
       <section className="section seo-section">

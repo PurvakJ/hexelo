@@ -263,7 +263,7 @@ function About() {
           <div className="locations-grid">
             <div className="location-card">
               <div className="location-icon">🏛️</div>
-              <h3>Bathinda Headquarters</h3>
+              <h3>Bathinda Headquarters, Punjab</h3>
               <p className="location-address">Main Office & Central Warehouse</p>
               <p className="location-detail">Serving North India with comprehensive inventory and quick dispatch</p>
               <div className="location-features">
@@ -274,7 +274,7 @@ function About() {
             </div>
             <div className="location-card">
               <div className="location-icon">🏭</div>
-              <h3>Rajkot Branch</h3>
+              <h3>Rajkot Branch, Gujrat</h3>
               <p className="location-address">Branch Office & Showroom</p>
               <p className="location-detail">Serving Western India with personalized service and local inventory</p>
               <div className="location-features">

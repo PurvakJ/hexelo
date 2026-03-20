@@ -147,29 +147,6 @@ function Product() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="stats-section">
-        <div className="container">
-          <div className="stats-grid">
-            <div className="stat-item">
-              <span className="stat-number">{productsData.products.length}+</span>
-              <span className="stat-label">Total Products</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-number">{categories.length - 1}</span>
-              <span className="stat-label">Categories</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-number">100%</span>
-              <span className="stat-label">Genuine Quality</span>
-            </div>
-            <div className="stat-item">
-              <span className="stat-number">24/7</span>
-              <span className="stat-label">Online Support</span>
-            </div>
-          </div>
-        </div>
-      </section>
 
       {/* Mobile Filter Bar */}
       {isMobile && (

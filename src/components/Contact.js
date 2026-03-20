@@ -1,72 +1,75 @@
 import React from 'react';
 import './Contact.css';
+import { FaWhatsapp, FaInstagram, FaFacebook, FaPhone, FaEnvelope, FaMapMarkerAlt, FaClock, FaStore, FaWarehouse } from 'react-icons/fa';
+import { MdLocationOn, MdEmail, MdPhone, MdChat } from 'react-icons/md';
+import { SiGooglemaps } from 'react-icons/si';
 
 function Contact() {
   // Business information
   const businessInfo = {
-    name: 'Hexelo Hardware',
+    name: 'GG Hardware',
     locations: [
       {
         city: 'Bathinda (Head Office)',
-        address: 'Main Bazar Road, Near Railway Station, Bathinda, Punjab - 151001',
-        phone: '+91 98765 43210',
-        phone2: '+91 98765 43211',
-        email: 'bathinda@hexelo.com',
+        address: 'Behind Kikar Bazar, Gali Singh Sabha Gurudwara, Bathinda, Punjab - 151005',
+        phone: '+91 97797 42103',
+        phone2: '+91 95308 22202',
+        phone2Whatsapp: false,
+        email: 'gghardware2023@gmail.com',
         map: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3445.123456789012!2d74.945678!3d30.234567!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391234567890abcd%3A0x1234567890abcdef!2sBathinda!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin',
         hours: 'Mon-Sat: 9:00 AM - 8:00 PM, Sun: Closed'
-      },
-      {
-        city: 'Rajkot Branch',
-        address: 'Kalavad Road, Opp. Race Course, Rajkot, Gujarat - 360001',
-        phone: '+91 98240 12345',
-        phone2: '+91 98240 12346',
-        email: 'rajkot@hexelo.com',
-        map: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3684.123456789012!2d70.798678!3d22.273456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3959abcd12345678%3A0x87654321fedcba98!2sRajkot!5e0!3m2!1sen!2sin!4v1620000000000!5m2!1sen!2sin',
-        hours: 'Mon-Sat: 10:00 AM - 7:00 PM, Sun: Closed'
       }
     ],
     socialMedia: [
       {
         platform: 'WhatsApp',
-        link: 'https://wa.me/919876543210?text=Hello%20Hexelo%20Hardware%2C%20I%20have%20a%20query%20about%20your%20products.',
-        icon: '📱',
-        username: '+91 98765 43210',
+        link: 'https://wa.me/919774742103?text=Hello%20GG%20Hardware%2C%20I%20have%20a%20query%20about%20your%20products.',
+        icon: FaWhatsapp,
+        username: '+91 97797 42103',
         color: '#25D366'
       },
       {
         platform: 'Instagram',
-        link: 'https://instagram.com/hexelo.hardware',
-        icon: '📷',
-        username: '@hexelo.hardware',
+        link: 'https://www.instagram.com/gghardware_13/',
+        icon: FaInstagram,
+        username: '@gghardware_13',
         color: '#E4405F'
       },
       {
         platform: 'Facebook',
-        link: 'https://facebook.com/hexelohardware',
-        icon: '📘',
-        username: 'Hexelo Hardware',
+        link: 'https://m.facebook.com/manish.garg.58555/',
+        icon: FaFacebook,
+        username: 'Manish Garg',
         color: '#1877F2'
-      },
-      {
-        platform: 'Twitter',
-        link: 'https://twitter.com/hexelo_hardware',
-        icon: '🐦',
-        username: '@hexelo_hardware',
-        color: '#1DA1F2'
       }
     ],
     quickContact: {
-      whatsapp: 'https://wa.me/919876543210?text=Hello%20Hexelo%20Hardware%2C%20I%20need%20assistance%20with%20hardware%20products.',
-      email: 'info@hexelo.com',
-      phone: '+91 98765 43210'
+      whatsapp: 'https://wa.me/919774742103?text=Hello%20GG%20Hardware%2C%20I%20need%20assistance%20with%20hardware%20products.',
+      email: 'gghardware2023@gmail.com',
+      phone: '+91 97797 42103',
+      phone2: '+91 95308 22202'
     }
   };
 
   // Function to handle WhatsApp click
-  const handleWhatsAppClick = (phone, message = '') => {
-    const defaultMessage = 'Hello Hexelo Hardware, I would like to know more about your products.';
+  const handleWhatsAppClick = (phone, message = '', isWhatsappEnabled = true) => {
+    if (!isWhatsappEnabled) {
+      alert('This number is not available on WhatsApp. Please call us directly at ' + phone);
+      return;
+    }
+    const defaultMessage = 'Hello GG Hardware, I would like to know more about your products.';
     const whatsappUrl = `https://wa.me/${phone.replace(/[^0-9]/g, '')}?text=${encodeURIComponent(message || defaultMessage)}`;
     window.open(whatsappUrl, '_blank');
+  };
+
+  // Function to handle phone call
+  const handlePhoneCall = (phone) => {
+    window.location.href = `tel:${phone.replace(/[^0-9]/g, '')}`;
+  };
+
+  // Function to handle email
+  const handleEmail = (email) => {
+    window.location.href = `mailto:${email}`;
   };
 
   return (
@@ -76,16 +79,16 @@ function Contact() {
         <div className="hero-overlay"></div>
         <div className="hero-pattern"></div>
         <div className="container hero-content">
-        <span className="hero-badge" style={{ color: '#ffffff' }}>Get in Touch</span>
+          <span className="hero-badge" style={{ color: '#ffffff' }}>Get in Touch</span>
           <h1 className="hero-title">
             <span className="hero-title-line">Connect with</span>
             <span className="hero-title-main">
               <span className="hero-letter">H</span>
-              <span className="hero-letter">e</span>
-              <span className="hero-letter">x</span>
-              <span className="hero-letter">e</span>
-              <span className="hero-letter">l</span>
-              <span className="hero-letter">o</span>
+              <span className="hero-letter">E</span>
+              <span className="hero-letter">X</span>
+              <span className="hero-letter">E</span>
+              <span className="hero-letter">L</span>
+              <span className="hero-letter">O</span>
             </span>
           </h1>
           <p className="hero-description">
@@ -99,14 +102,16 @@ function Contact() {
       <section className="section whatsapp-quick-section">
         <div className="container">
           <div className="whatsapp-quick-card">
-            <div className="whatsapp-icon-large">📱</div>
+            <div className="whatsapp-icon-large">
+              <FaWhatsapp size={48} />
+            </div>
             <h2>Chat with Us on WhatsApp</h2>
             <p>Get instant responses from our hardware experts</p>
             <button 
-              onClick={() => handleWhatsAppClick(businessInfo.quickContact.whatsapp)}
+              onClick={() => handleWhatsAppClick(businessInfo.quickContact.phone)}
               className="btn btn-whatsapp"
             >
-              <span className="btn-icon">📱</span>
+              <span className="btn-icon"><FaWhatsapp /></span>
               Start WhatsApp Chat
               <span className="btn-icon">→</span>
             </button>
@@ -126,101 +131,65 @@ function Contact() {
           </div>
 
           <div className="social-grid">
-            {businessInfo.socialMedia.map((social, index) => (
-              <a 
-                key={index}
-                href={social.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-card"
-                style={{'--social-color': social.color}}
-              >
-                <div className="social-icon">{social.icon}</div>
-                <h3>{social.platform}</h3>
-                <p>{social.username}</p>
-                <span className="social-link">Connect →</span>
-              </a>
-            ))}
+            {businessInfo.socialMedia.map((social, index) => {
+              const IconComponent = social.icon;
+              return (
+                <a 
+                  key={index}
+                  href={social.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-card"
+                  style={{'--social-color': social.color}}
+                >
+                  <div className="social-icon">
+                    <IconComponent size={48} />
+                  </div>
+                  <h3>{social.platform}</h3>
+                  <p>{social.username}</p>
+                  <span className="social-link">Connect →</span>
+                </a>
+              );
+            })}
           </div>
         </div>
       </section>
 
       {/* Locations Section */}
-      <section className="section locations-section">
+      <section 
+      >
         <div className="container">
           <div className="section-header">
-            <span className="section-subtitle">Visit Us</span>
-            <h2 className="section-title">Our <span className="text-highlight">Locations</span></h2>
+            <span className="section-subtitle">Where to Find Us</span>
+            <h2 className="section-title">Our <span className="text-highlight">Presence</span></h2>
             <p className="section-description">
-              Visit our stores in Bathinda and Rajkot for personalized service
+              Strategically located to serve you better across India
             </p>
           </div>
 
           <div className="locations-grid">
-            {businessInfo.locations.map((location, index) => (
-              <div key={index} className="location-card">
-                <div className="location-header">
-                  <div className="location-icon">📍</div>
-                  <h3>{location.city}</h3>
-                </div>
-                
-                <div className="location-details">
-                  <div className="location-detail">
-                    <span className="detail-icon">🏢</span>
-                    <p>{location.address}</p>
-                  </div>
-                  
-                  <div className="location-detail">
-                    <span className="detail-icon">📞</span>
-                    <div className="phone-numbers">
-                      <button 
-                        onClick={() => handleWhatsAppClick(location.phone)}
-                        className="phone-link"
-                      >
-                        {location.phone} <span className="whatsapp-indicator">(WhatsApp)</span>
-                      </button>
-                      <button 
-                        onClick={() => handleWhatsAppClick(location.phone2)}
-                        className="phone-link"
-                      >
-                        {location.phone2} <span className="whatsapp-indicator">(WhatsApp)</span>
-                      </button>
-                    </div>
-                  </div>
-                  
-                  <div className="location-detail">
-                    <span className="detail-icon">✉️</span>
-                    <a href={`mailto:${location.email}`} className="email-link">
-                      {location.email}
-                    </a>
-                  </div>
-                  
-                  <div className="location-detail">
-                    <span className="detail-icon">🕒</span>
-                    <p>{location.hours}</p>
-                  </div>
-                </div>
-
-                <div className="location-actions">
-                  <button 
-                    onClick={() => handleWhatsAppClick(location.phone, `Hi, I'm interested in products at your ${location.city} store.`)}
-                    className="btn btn-outline btn-small"
-                  >
-                    <span className="btn-icon">📱</span>
-                    WhatsApp
-                  </button>
-                  <a 
-                    href={`https://maps.google.com/?q=${encodeURIComponent(location.address)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-outline btn-small"
-                  >
-                    <span className="btn-icon">🗺️</span>
-                    Directions
-                  </a>
-                </div>
+            <div className="location-card">
+              <div className="location-icon">🏛️</div>
+              <h3>Bathinda Headquarters, Punjab</h3>
+              <p className="location-address">Main Office & Central Warehouse</p>
+              <p className="location-detail">Serving North India with comprehensive inventory and quick dispatch</p>
+              <div className="location-features">
+                <span>✓ 25,000+ sq. ft. warehouse</span>
+                <span>✓ Same-day dispatch</span>
+                <span>✓ Wholesale & retail</span>
               </div>
-            ))}
+            </div>
+            <div className="location-card">
+              <div className="location-icon">🏭</div>
+              <h3>Rajkot Branch, Gujrat</h3>
+              <p className="location-address">Branch Office & Showroom</p>
+              <p className="location-detail">Serving Western India with personalized service and local inventory</p>
+              <div className="location-features">
+                <span>✓ 10,000+ sq. ft. showroom</span>
+                <span>✓ Expert consultation</span>
+                <span>✓ Sample display</span>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -239,34 +208,21 @@ function Contact() {
               loading="lazy"
             ></iframe>
             <div className="map-overlay">
-              <h4>Bathinda Head Office</h4>
-              <button 
-                onClick={() => handleWhatsAppClick(businessInfo.locations[0].phone)}
-                className="btn btn-primary btn-small"
-              >
-                WhatsApp Us
-              </button>
-            </div>
-          </div>
-          
-          <div className="map-container">
-            <iframe
-              title="Rajkot Location"
-              src={businessInfo.locations[1].map}
-              width="100%"
-              height="300"
-              style={{ border: 0 }}
-              allowFullScreen=""
-              loading="lazy"
-            ></iframe>
-            <div className="map-overlay">
-              <h4>Rajkot Branch</h4>
-              <button 
-                onClick={() => handleWhatsAppClick(businessInfo.locations[1].phone)}
-                className="btn btn-primary btn-small"
-              >
-                WhatsApp Us
-              </button>
+              <h4><MdLocationOn /> HEXELO - Bathinda</h4>
+              <div className="map-buttons">
+                <button 
+                  onClick={() => handleWhatsAppClick(businessInfo.locations[0].phone, '', true)}
+                  className="btn btn-primary btn-small"
+                >
+                  <FaWhatsapp /> WhatsApp Us
+                </button>
+                <button 
+                  onClick={() => handlePhoneCall(businessInfo.locations[0].phone2)}
+                  className="btn btn-secondary btn-small"
+                >
+                  <FaPhone /> Call Us
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -277,37 +233,39 @@ function Contact() {
         <div className="container">
           <div className="hours-grid">
             <div className="hours-item">
-              <span className="hours-icon">🕒</span>
+              <span className="hours-icon"><FaClock /></span>
               <div>
-                <h4>Bathinda Store Hours</h4>
+                <h4>Store Hours</h4>
                 <p>Monday - Saturday: 9:00 AM - 8:00 PM</p>
                 <p>Sunday: Closed</p>
               </div>
             </div>
-            <div className="hours-item">
-              <span className="hours-icon">🕒</span>
-              <div>
-                <h4>Rajkot Store Hours</h4>
-                <p>Monday - Saturday: 10:00 AM - 7:00 PM</p>
-                <p>Sunday: Closed</p>
-              </div>
-            </div>
             <div className="hours-item highlight">
-              <span className="hours-icon">📱</span>
+              <span className="hours-icon"><FaWhatsapp /></span>
               <div>
                 <h4>WhatsApp Support</h4>
                 <p>24/7 Quick Response</p>
                 <button 
-                  onClick={() => handleWhatsAppClick(businessInfo.quickContact.whatsapp)}
+                  onClick={() => handleWhatsAppClick(businessInfo.quickContact.phone)}
                   className="btn-link"
                 >
                   Chat Now →
                 </button>
               </div>
             </div>
+            <div className="hours-item">
+              <span className="hours-icon"><FaPhone /></span>
+              <div>
+                <h4>Call Support</h4>
+                <p>+91 97797 42103</p>
+                <p>+91 95308 22202 (Call Only)</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>
+
+      {/* Contact Information Footer */}
     </div>
   );
 }
