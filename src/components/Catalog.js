@@ -277,7 +277,6 @@ const Catalog = () => {
       }
     };
 
-    
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [goToPreviousPage, goToNextPage, isMobile, isIOS]);
