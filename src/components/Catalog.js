@@ -1,14 +1,18 @@
 // components/Catalog.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Catalog.css';
 
 const Catalog = () => {
   const [currentPage, setCurrentPage] = useState(0);
   const [isFlipping, setIsFlipping] = useState(false);
   const [flipDirection, setFlipDirection] = useState(null);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isMobile, setIsMobile] = useState(false);
+  const [isIOS, setIsIOS] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(20);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const scrollContainerRef = useRef(null);
   
-  // Array of catalog images
+  // Array of catalog images (keep all your images)
   const catalogImages = [
     'https://i.postimg.cc/bvyxZ26r/Gemini-Generated-Image-dzjo45dzjo45dzjo.png',
     'https://i.postimg.cc/T3vkXTbq/TRIONE-MORTISE-CATALOGUE-2025-(C)-01.jpg',
@@ -313,19 +317,157 @@ const Catalog = () => {
 'https://i.postimg.cc/CdTFSszR/HELEXO-CATALOG-169.png',
   ];
 
-  // Handle resize
+  // Detect iOS device
   useEffect(() => {
-    const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+    const checkIOS = () => {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    setIsIOS(checkIOS());
   }, []);
+
+  // Handle resize with debounce
+  useEffect(() => {
+    let resizeTimer;
+    const handleResize = () => {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(() => {
+        const mobile = window.innerWidth <= 768;
+        setIsMobile(mobile);
+        
+        // Reset page when switching between mobile/desktop
+        if (mobile !== isMobile) {
+          setCurrentPage(0);
+        }
+        
+        // Reset visible count for iOS when switching to mobile
+        if (mobile && isIOS) {
+          setVisibleCount(20);
+        }
+      }, 250);
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      clearTimeout(resizeTimer);
+    };
+  }, [isMobile, isIOS]);
+
+  // Progressive loading for iOS with Intersection Observer
+  useEffect(() => {
+    if (!isMobile || !isIOS || !scrollContainerRef.current) return;
+    
+    let observer;
+    let loadingTimeout;
+    
+    const loadMoreImages = () => {
+      if (isLoadingMore) return;
+      if (visibleCount >= catalogImages.length) return;
+      
+      setIsLoadingMore(true);
+      
+      // Simulate loading delay for better UX
+      loadingTimeout = setTimeout(() => {
+        setVisibleCount(prev => Math.min(prev + 10, catalogImages.length));
+        setIsLoadingMore(false);
+      }, 500);
+    };
+    
+    // Create an observer to watch for the last image
+    const setupObserver = () => {
+      const lastImage = document.querySelector('.mobile-page-item:last-child');
+      if (lastImage) {
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting && visibleCount < catalogImages.length) {
+              loadMoreImages();
+            }
+          },
+          { root: scrollContainerRef.current, threshold: 0.1, rootMargin: '100px' }
+        );
+        
+        observer.observe(lastImage);
+      }
+    };
+    
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(setupObserver, 100);
+    
+    return () => {
+      if (observer) observer.disconnect();
+      clearTimeout(timeoutId);
+      clearTimeout(loadingTimeout);
+    };
+  }, [isMobile, isIOS, visibleCount, catalogImages.length, isLoadingMore]);
+
+  // Manual scroll listener as fallback
+  useEffect(() => {
+    if (!isMobile || !isIOS || !scrollContainerRef.current) return;
+    
+    let scrollTimeout;
+    
+    const handleScroll = () => {
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      
+      scrollTimeout = setTimeout(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+        
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+        
+        // Load more when user scrolls to 80% of the content
+        if (scrollPercentage > 0.8 && !isLoadingMore && visibleCount < catalogImages.length) {
+          setIsLoadingMore(true);
+          
+          setTimeout(() => {
+            setVisibleCount(prev => Math.min(prev + 10, catalogImages.length));
+            setIsLoadingMore(false);
+          }, 300);
+        }
+      }, 150);
+    };
+    
+    const container = scrollContainerRef.current;
+    container.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [isMobile, isIOS, visibleCount, catalogImages.length, isLoadingMore]);
+
+  // Lazy load images with IntersectionObserver
+  useEffect(() => {
+    if (!isMobile || !isIOS) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.getAttribute('data-src');
+            if (src && !img.src) {
+              img.src = src;
+              img.classList.add('loaded');
+            }
+            observer.unobserve(img);
+          }
+        });
+      },
+      { rootMargin: '100px', threshold: 0.01 }
+    );
+    
+    const images = document.querySelectorAll('.mobile-page-image[data-src]');
+    images.forEach(img => observer.observe(img));
+    
+    return () => observer.disconnect();
+  }, [isMobile, isIOS, visibleCount]);
 
   const totalPages = isMobile ? catalogImages.length : Math.ceil(catalogImages.length / 2);
 
-  const goToPreviousPage = () => {
+  const goToPreviousPage = useCallback(() => {
     if (currentPage > 0 && !isFlipping && !isMobile) {
       setFlipDirection('right');
       setIsFlipping(true);
@@ -337,9 +479,9 @@ const Catalog = () => {
         }, 300);
       }, 150);
     }
-  };
+  }, [currentPage, isFlipping, isMobile]);
 
-  const goToNextPage = () => {
+  const goToNextPage = useCallback(() => {
     if (currentPage < totalPages - 1 && !isFlipping && !isMobile) {
       setFlipDirection('left');
       setIsFlipping(true);
@@ -351,14 +493,11 @@ const Catalog = () => {
         }, 300);
       }, 150);
     }
-  };
+  }, [currentPage, totalPages, isFlipping, isMobile]);
 
-  // Get current content based on device
-  const getCurrentContent = () => {
+  const getCurrentContent = useCallback(() => {
     if (isMobile) {
-      return {
-        single: catalogImages[currentPage]
-      };
+      return { single: catalogImages[currentPage] };
     } else {
       const startIndex = currentPage * 2;
       return {
@@ -366,20 +505,19 @@ const Catalog = () => {
         right: catalogImages[startIndex + 1]
       };
     }
-  };
+  }, [isMobile, currentPage, catalogImages]);
 
   const content = getCurrentContent();
 
-  // Handle PDF download
   const handleDownload = () => {
     const pdfUrl = 'https://drive.google.com/file/d/1c2I0y8WvH9zcqtGa71NdEAYAUEeJ4WSg/view?usp=sharing';
     window.open(pdfUrl, '_blank');
   };
 
-  // Keyboard navigation (only for desktop)
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (!isMobile) {
+      if (!isMobile && !isIOS) {
         if (e.key === 'ArrowLeft') {
           goToPreviousPage();
         } else if (e.key === 'ArrowRight') {
@@ -390,7 +528,123 @@ const Catalog = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [currentPage, isFlipping, isMobile]);
+  }, [goToPreviousPage, goToNextPage, isMobile, isIOS]);
+
+  // Handle touch events for iOS swipe
+  useEffect(() => {
+    if (!isMobile || !isIOS) return;
+    
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    const handleTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    };
+    
+    const handleTouchEnd = (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeThreshold = 50;
+      
+      if (touchStartX - touchEndX > swipeThreshold) {
+        // Swipe left - next page
+        if (currentPage < totalPages - 1) {
+          setCurrentPage(currentPage + 1);
+        }
+      } else if (touchEndX - touchStartX > swipeThreshold) {
+        // Swipe right - previous page
+        if (currentPage > 0) {
+          setCurrentPage(currentPage - 1);
+        }
+      }
+    };
+    
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('touchstart', handleTouchStart);
+      container.addEventListener('touchend', handleTouchEnd);
+      
+      return () => {
+        container.removeEventListener('touchstart', handleTouchStart);
+        container.removeEventListener('touchend', handleTouchEnd);
+      };
+    }
+  }, [currentPage, totalPages, isMobile, isIOS]);
+
+  // Preload adjacent images for desktop
+  useEffect(() => {
+    if (!isMobile && catalogImages[currentPage * 2 + 2]) {
+      const img = new Image();
+      img.src = catalogImages[currentPage * 2 + 2];
+    }
+    if (!isMobile && catalogImages[currentPage * 2 + 3]) {
+      const img = new Image();
+      img.src = catalogImages[currentPage * 2 + 3];
+    }
+  }, [currentPage, isMobile, catalogImages]);
+
+  // Function to manually load more pages (for "Load More" button)
+  const loadMorePages = () => {
+    if (!isLoadingMore && visibleCount < catalogImages.length) {
+      setIsLoadingMore(true);
+      setTimeout(() => {
+        setVisibleCount(prev => Math.min(prev + 20, catalogImages.length));
+        setIsLoadingMore(false);
+      }, 300);
+    }
+  };
+
+  // Render mobile view
+  const renderMobileView = () => {
+    const visibleImages = catalogImages.slice(0, visibleCount);
+    const hasMore = visibleCount < catalogImages.length;
+    
+    return (
+      <div className="mobile-scroll-view" ref={scrollContainerRef}>
+        {visibleImages.map((image, index) => (
+          <div key={index} className="mobile-page-item">
+            {isIOS ? (
+              <img 
+                data-src={image}
+                alt={`Catalog page ${index + 1}`}
+                className="mobile-page-image lazy"
+                loading="lazy"
+              />
+            ) : (
+              <img 
+                src={image}
+                alt={`Catalog page ${index + 1}`}
+                className="mobile-page-image"
+                loading="lazy"
+              />
+            )}
+            <div className="mobile-page-number">Page {index + 1}</div>
+          </div>
+        ))}
+        
+        {hasMore && (
+          <div className="loading-more-container">
+            {isLoadingMore ? (
+              <div className="loading-indicator">
+                <div className="loader"></div>
+                <p>Loading more pages...</p>
+              </div>
+            ) : (
+              <button className="load-more-button" onClick={loadMorePages}>
+                Load More Pages ({catalogImages.length - visibleCount} remaining)
+              </button>
+            )}
+          </div>
+        )}
+        
+        {!hasMore && visibleCount > 0 && (
+          <div className="end-of-catalog">
+            <p>✓ End of Catalog</p>
+            <p className="total-pages-count">Total {catalogImages.length} pages</p>
+          </div>
+        )}
+      </div>
+    );
+  };
 
   return (
     <div className="catalog-container">
@@ -398,7 +652,7 @@ const Catalog = () => {
         <h1>TRIONE MORTISE CATALOGUE 2025</h1>
         <p className="catalog-subtitle">
           {isMobile 
-            ? `${catalogImages.length} Pages` 
+            ? `Showing ${visibleCount} of ${catalogImages.length} Pages` 
             : `Spread ${currentPage + 1} of ${totalPages}`}
         </p>
       </div>
@@ -406,24 +660,9 @@ const Catalog = () => {
       <div className="book-container">
         <div className={`book-spread ${isMobile ? 'mobile-view' : ''} ${isFlipping ? `flipping-${flipDirection}` : ''}`}>
           {isMobile ? (
-            // Mobile: Vertical scroll view
-            <div className="mobile-scroll-view">
-              {catalogImages.map((image, index) => (
-                <div key={index} className="mobile-page-item">
-                  <img 
-                    src={image} 
-                    alt={`Catalog page ${index + 1}`}
-                    className="mobile-page-image"
-                    loading="lazy"
-                  />
-                  <div className="mobile-page-number">Page {index + 1}</div>
-                </div>
-              ))}
-            </div>
+            renderMobileView()
           ) : (
-            // Desktop: Two-page spread
             <>
-              {/* Left Page */}
               <div className="book-page left-page">
                 {content.left && (
                   <img 
@@ -434,8 +673,6 @@ const Catalog = () => {
                   />
                 )}
               </div>
-
-              {/* Right Page */}
               <div className="book-page right-page">
                 {content.right && (
                   <img 
@@ -450,7 +687,6 @@ const Catalog = () => {
           )}
         </div>
 
-        {/* Desktop Navigation Controls - Hidden on Mobile */}
         {!isMobile && (
           <>
             <div className="navigation-controls">
@@ -458,9 +694,10 @@ const Catalog = () => {
                 className="nav-button prev-button"
                 onClick={goToPreviousPage}
                 disabled={currentPage === 0 || isFlipping}
+                aria-label="Previous page"
               >
                 <span className="nav-icon">◀</span>
-                Previous
+                <span className="nav-text">Previous</span>
               </button>
 
               <div className="page-indicator">
@@ -473,8 +710,9 @@ const Catalog = () => {
                 className="nav-button next-button"
                 onClick={goToNextPage}
                 disabled={currentPage === totalPages - 1 || isFlipping}
+                aria-label="Next page"
               >
-                Next
+                <span className="nav-text">Next</span>
                 <span className="nav-icon">▶</span>
               </button>
             </div>
@@ -485,17 +723,17 @@ const Catalog = () => {
           </>
         )}
 
-        {/* Download Button - Visible on all devices */}
         <div className="download-section">
           <button 
             className="download-button"
             onClick={handleDownload}
+            aria-label="Download PDF catalog"
           >
             <span className="download-icon">📥</span>
-            Download Full Catalog (PDF)
+            <span>Download Full Catalog (PDF)</span>
             <span className="download-icon">📄</span>
           </button>
-          <p className="download-info">Complete TRIONE Mortise Catalogue 2025 • 52 pages</p>
+          <p className="download-info">Complete TRIONE Mortise Catalogue 2025 • 169 pages</p>
         </div>
       </div>
     </div>
