@@ -1,9 +1,6 @@
 // components/Catalog.js
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './Catalog.css';
-
-// Import your local PDF file
-import helexoCatalog from '../data/helexo.pdf';
 
 const Catalog = () => {
   const [currentPage, setCurrentPage] = useState(0);
@@ -11,11 +8,11 @@ const Catalog = () => {
   const [flipDirection, setFlipDirection] = useState(null);
   const [isMobile, setIsMobile] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const [pdfError, setPdfError] = useState(false);
+  const [visibleCount, setVisibleCount] = useState(20);
+  const [isLoadingMore, setIsLoadingMore] = useState(false);
+  const scrollContainerRef = useRef(null);
   
-  // Array of catalog images for desktop view
-  // You can keep your catalogImages array here, but I'll leave it as a placeholder
+  // Array of catalog images (keep all your images)
   const catalogImages = [
     'https://i.postimg.cc/bvyxZ26r/Gemini-Generated-Image-dzjo45dzjo45dzjo.png',
     'https://i.postimg.cc/T3vkXTbq/TRIONE-MORTISE-CATALOGUE-2025-(C)-01.jpg',
@@ -320,18 +317,15 @@ const Catalog = () => {
 'https://i.postimg.cc/CdTFSszR/HELEXO-CATALOG-169.png',
   ];
 
-  // Detect device
+  // Detect iOS device
   useEffect(() => {
     const checkIOS = () => {
       return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     };
-    
-    const mobile = window.innerWidth <= 768;
-    setIsMobile(mobile);
     setIsIOS(checkIOS());
   }, []);
 
-  // Handle resize
+  // Handle resize with debounce
   useEffect(() => {
     let resizeTimer;
     const handleResize = () => {
@@ -339,20 +333,139 @@ const Catalog = () => {
       resizeTimer = setTimeout(() => {
         const mobile = window.innerWidth <= 768;
         setIsMobile(mobile);
+        
+        // Reset page when switching between mobile/desktop
         if (mobile !== isMobile) {
           setCurrentPage(0);
+        }
+        
+        // Reset visible count for iOS when switching to mobile
+        if (mobile && isIOS) {
+          setVisibleCount(20);
         }
       }, 250);
     };
     
+    handleResize();
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
       clearTimeout(resizeTimer);
     };
-  }, [isMobile]);
+  }, [isMobile, isIOS]);
 
-  const totalPages = !isMobile ? Math.ceil(catalogImages.length / 2) : catalogImages.length;
+  // Progressive loading for iOS with Intersection Observer
+  useEffect(() => {
+    if (!isMobile || !isIOS || !scrollContainerRef.current) return;
+    
+    let observer;
+    let loadingTimeout;
+    
+    const loadMoreImages = () => {
+      if (isLoadingMore) return;
+      if (visibleCount >= catalogImages.length) return;
+      
+      setIsLoadingMore(true);
+      
+      // Simulate loading delay for better UX
+      loadingTimeout = setTimeout(() => {
+        setVisibleCount(prev => Math.min(prev + 10, catalogImages.length));
+        setIsLoadingMore(false);
+      }, 500);
+    };
+    
+    // Create an observer to watch for the last image
+    const setupObserver = () => {
+      const lastImage = document.querySelector('.mobile-page-item:last-child');
+      if (lastImage) {
+        observer = new IntersectionObserver(
+          (entries) => {
+            if (entries[0].isIntersecting && visibleCount < catalogImages.length) {
+              loadMoreImages();
+            }
+          },
+          { root: scrollContainerRef.current, threshold: 0.1, rootMargin: '100px' }
+        );
+        
+        observer.observe(lastImage);
+      }
+    };
+    
+    // Small delay to ensure DOM is ready
+    const timeoutId = setTimeout(setupObserver, 100);
+    
+    return () => {
+      if (observer) observer.disconnect();
+      clearTimeout(timeoutId);
+      clearTimeout(loadingTimeout);
+    };
+  }, [isMobile, isIOS, visibleCount, catalogImages.length, isLoadingMore]);
+
+  // Manual scroll listener as fallback
+  useEffect(() => {
+    if (!isMobile || !isIOS || !scrollContainerRef.current) return;
+    
+    let scrollTimeout;
+    
+    const handleScroll = () => {
+      if (scrollTimeout) clearTimeout(scrollTimeout);
+      
+      scrollTimeout = setTimeout(() => {
+        const container = scrollContainerRef.current;
+        if (!container) return;
+        
+        const { scrollTop, scrollHeight, clientHeight } = container;
+        const scrollPercentage = (scrollTop + clientHeight) / scrollHeight;
+        
+        // Load more when user scrolls to 80% of the content
+        if (scrollPercentage > 0.8 && !isLoadingMore && visibleCount < catalogImages.length) {
+          setIsLoadingMore(true);
+          
+          setTimeout(() => {
+            setVisibleCount(prev => Math.min(prev + 10, catalogImages.length));
+            setIsLoadingMore(false);
+          }, 300);
+        }
+      }, 150);
+    };
+    
+    const container = scrollContainerRef.current;
+    container.addEventListener('scroll', handleScroll);
+    
+    return () => {
+      container.removeEventListener('scroll', handleScroll);
+      clearTimeout(scrollTimeout);
+    };
+  }, [isMobile, isIOS, visibleCount, catalogImages.length, isLoadingMore]);
+
+  // Lazy load images with IntersectionObserver
+  useEffect(() => {
+    if (!isMobile || !isIOS) return;
+    
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            const img = entry.target;
+            const src = img.getAttribute('data-src');
+            if (src && !img.src) {
+              img.src = src;
+              img.classList.add('loaded');
+            }
+            observer.unobserve(img);
+          }
+        });
+      },
+      { rootMargin: '100px', threshold: 0.01 }
+    );
+    
+    const images = document.querySelectorAll('.mobile-page-image[data-src]');
+    images.forEach(img => observer.observe(img));
+    
+    return () => observer.disconnect();
+  }, [isMobile, isIOS, visibleCount]);
+
+  const totalPages = isMobile ? catalogImages.length : Math.ceil(catalogImages.length / 2);
 
   const goToPreviousPage = useCallback(() => {
     if (currentPage > 0 && !isFlipping && !isMobile) {
@@ -383,46 +496,28 @@ const Catalog = () => {
   }, [currentPage, totalPages, isFlipping, isMobile]);
 
   const getCurrentContent = useCallback(() => {
-    if (!isMobile) {
+    if (isMobile) {
+      return { single: catalogImages[currentPage] };
+    } else {
       const startIndex = currentPage * 2;
       return {
         left: catalogImages[startIndex],
         right: catalogImages[startIndex + 1]
       };
     }
-    return null;
   }, [isMobile, currentPage, catalogImages]);
 
   const content = getCurrentContent();
 
   const handleDownload = () => {
-    // Create a temporary anchor element to trigger download
-    const link = document.createElement('a');
-    link.href = helexoCatalog;
-    link.download = 'HEXELO-Catalog-2025.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const pdfUrl = 'https://drive.google.com/file/d/1sSa4pJ0spc3PRXRmkLLnhoTSbO1xEvQZ/view?usp=sharing';
+    window.open(pdfUrl, '_blank');
   };
 
-  const handleViewOnline = () => {
-    // Open PDF in new tab
-    window.open(helexoCatalog, '_blank');
-  };
-
-  const handlePdfLoad = () => {
-    setIsLoading(false);
-  };
-
-  const handlePdfError = () => {
-    setPdfError(true);
-    setIsLoading(false);
-  };
-
-  // Keyboard navigation (desktop only)
+  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (!isMobile) {
+      if (!isMobile && !isIOS) {
         if (e.key === 'ArrowLeft') {
           goToPreviousPage();
         } else if (e.key === 'ArrowRight') {
@@ -433,7 +528,47 @@ const Catalog = () => {
 
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [goToPreviousPage, goToNextPage, isMobile]);
+  }, [goToPreviousPage, goToNextPage, isMobile, isIOS]);
+
+  // Handle touch events for iOS swipe
+  useEffect(() => {
+    if (!isMobile || !isIOS) return;
+    
+    let touchStartX = 0;
+    let touchEndX = 0;
+    
+    const handleTouchStart = (e) => {
+      touchStartX = e.changedTouches[0].screenX;
+    };
+    
+    const handleTouchEnd = (e) => {
+      touchEndX = e.changedTouches[0].screenX;
+      const swipeThreshold = 50;
+      
+      if (touchStartX - touchEndX > swipeThreshold) {
+        // Swipe left - next page
+        if (currentPage < totalPages - 1) {
+          setCurrentPage(currentPage + 1);
+        }
+      } else if (touchEndX - touchStartX > swipeThreshold) {
+        // Swipe right - previous page
+        if (currentPage > 0) {
+          setCurrentPage(currentPage - 1);
+        }
+      }
+    };
+    
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('touchstart', handleTouchStart);
+      container.addEventListener('touchend', handleTouchEnd);
+      
+      return () => {
+        container.removeEventListener('touchstart', handleTouchStart);
+        container.removeEventListener('touchend', handleTouchEnd);
+      };
+    }
+  }, [currentPage, totalPages, isMobile, isIOS]);
 
   // Preload adjacent images for desktop
   useEffect(() => {
@@ -447,148 +582,159 @@ const Catalog = () => {
     }
   }, [currentPage, isMobile, catalogImages]);
 
-  // Render mobile PDF view with local file
-  const renderMobilePDFView = () => {
-    return (
-      <div className="mobile-pdf-view">
-        <div className={`pdf-container ${isLoading ? 'loading' : ''}`}>
-          {isLoading && (
-            <div className="pdf-loading-overlay">
-              <div className="loader"></div>
-              <p>Loading catalog...</p>
-              <p className="loading-hint">Please wait while the PDF loads</p>
-            </div>
-          )}
-          
-          {!pdfError ? (
-            <iframe
-              src={helexoCatalog}
-              className="pdf-iframe"
-              title="HEXELO Catalog 2025"
-              onLoad={handlePdfLoad}
-              onError={handlePdfError}
-              frameBorder="0"
-              allow="autoplay"
-              allowFullScreen
-            />
-          ) : (
-            <div className="pdf-error-mobile">
-              <div className="error-icon">📄</div>
-              <h3>Unable to load PDF viewer</h3>
-              <p>Please download the catalog to view it</p>
-              <div className="mobile-button-group">
-                <button className="download-button-mobile" onClick={handleDownload}>
-                  <span>📥</span> Download PDF
-                </button>
-                <button className="view-button-mobile" onClick={handleViewOnline}>
-                  <span>👁️</span> Open in Browser
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
-        
-        <div className="mobile-controls">
-          <button className="download-button primary" onClick={handleDownload}>
-            <span className="download-icon">📥</span>
-            Download Catalog
-          </button>
-          
-        </div>
-      </div>
-    );
+  // Function to manually load more pages (for "Load More" button)
+  const loadMorePages = () => {
+    if (!isLoadingMore && visibleCount < catalogImages.length) {
+      setIsLoadingMore(true);
+      setTimeout(() => {
+        setVisibleCount(prev => Math.min(prev + 20, catalogImages.length));
+        setIsLoadingMore(false);
+      }, 300);
+    }
   };
 
-  // Render desktop book view
-  const renderDesktopBookView = () => {
-    if (!content.left && !content.right) {
-      return (
-        <div className="no-images-message">
-          <p>Loading catalog images...</p>
-        </div>
-      );
-    }
+  // Render mobile view
+  const renderMobileView = () => {
+    const visibleImages = catalogImages.slice(0, visibleCount);
+    const hasMore = visibleCount < catalogImages.length;
     
     return (
-      <>
-        <div className={`book-spread ${isFlipping ? `flipping-${flipDirection}` : ''}`}>
-          <div className="book-page left-page">
-            {content.left && (
+      <div className="mobile-scroll-view" ref={scrollContainerRef}>
+        {visibleImages.map((image, index) => (
+          <div key={index} className="mobile-page-item">
+            {isIOS ? (
               <img 
-                src={content.left} 
-                alt={`Catalog page ${currentPage * 2 + 1}`}
-                className="page-image"
+                data-src={image}
+                alt={`Catalog page ${index + 1}`}
+                className="mobile-page-image lazy"
+                loading="lazy"
+              />
+            ) : (
+              <img 
+                src={image}
+                alt={`Catalog page ${index + 1}`}
+                className="mobile-page-image"
                 loading="lazy"
               />
             )}
+            <div className="mobile-page-number">Page {index + 1}</div>
           </div>
-          <div className="book-page right-page">
-            {content.right && (
-              <img 
-                src={content.right} 
-                alt={`Catalog page ${currentPage * 2 + 2}`}
-                className="page-image"
-                loading="lazy"
-              />
+        ))}
+        
+        {hasMore && (
+          <div className="loading-more-container">
+            {isLoadingMore ? (
+              <div className="loading-indicator">
+                <div className="loader"></div>
+                <p>Loading more pages...</p>
+              </div>
+            ) : (
+              <button className="load-more-button" onClick={loadMorePages}>
+                Load More Pages ({catalogImages.length - visibleCount} remaining)
+              </button>
             )}
           </div>
-        </div>
-
-        <div className="navigation-controls">
-          <button 
-            className="nav-button prev-button"
-            onClick={goToPreviousPage}
-            disabled={currentPage === 0 || isFlipping}
-            aria-label="Previous page"
-          >
-            <span className="nav-icon">◀</span>
-            <span className="nav-text">Previous</span>
-          </button>
-
-          <div className="page-indicator">
-            <span className="current-page">{currentPage + 1}</span>
-            <span className="separator">/</span>
-            <span className="total-pages">{totalPages}</span>
+        )}
+        
+        {!hasMore && visibleCount > 0 && (
+          <div className="end-of-catalog">
+            <p>✓ End of Catalog</p>
+            <p className="total-pages-count">Total {catalogImages.length} pages</p>
           </div>
-
-          <button 
-            className="nav-button next-button"
-            onClick={goToNextPage}
-            disabled={currentPage === totalPages - 1 || isFlipping}
-            aria-label="Next page"
-          >
-            <span className="nav-text">Next</span>
-            <span className="nav-icon">▶</span>
-          </button>
-        </div>
-
-        <div className="keyboard-hint">
-          ← Use keyboard arrows to flip pages →
-        </div>
-
-        <div className="desktop-download">
-          <button className="download-button secondary" onClick={handleDownload}>
-            <span className="download-icon">📥</span>
-            Download PDF Catalog
-          </button>
-        </div>
-      </>
+        )}
+      </div>
     );
   };
 
   return (
     <div className="catalog-container">
       <div className="catalog-header">
-        <h1>HEXELO CATALOGUE 2025</h1>
+        <h1>TRIONE MORTISE CATALOGUE 2025</h1>
         <p className="catalog-subtitle">
           {isMobile 
-            ? 'Complete Product Catalog • PDF Format' 
-            : `Complete Product Catalog • ${totalPages} Spreads`}
+            ? `Showing ${visibleCount} of ${catalogImages.length} Pages` 
+            : `Spread ${currentPage + 1} of ${totalPages}`}
         </p>
       </div>
 
-      <div className="catalog-viewer">
-        {isMobile ? renderMobilePDFView() : renderDesktopBookView()}
+      <div className="book-container">
+        <div className={`book-spread ${isMobile ? 'mobile-view' : ''} ${isFlipping ? `flipping-${flipDirection}` : ''}`}>
+          {isMobile ? (
+            renderMobileView()
+          ) : (
+            <>
+              <div className="book-page left-page">
+                {content.left && (
+                  <img 
+                    src={content.left} 
+                    alt={`Catalog page ${currentPage * 2 + 1}`}
+                    className="page-image"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+              <div className="book-page right-page">
+                {content.right && (
+                  <img 
+                    src={content.right} 
+                    alt={`Catalog page ${currentPage * 2 + 2}`}
+                    className="page-image"
+                    loading="lazy"
+                  />
+                )}
+              </div>
+            </>
+          )}
+        </div>
+
+        {!isMobile && (
+          <>
+            <div className="navigation-controls">
+              <button 
+                className="nav-button prev-button"
+                onClick={goToPreviousPage}
+                disabled={currentPage === 0 || isFlipping}
+                aria-label="Previous page"
+              >
+                <span className="nav-icon">◀</span>
+                <span className="nav-text">Previous</span>
+              </button>
+
+              <div className="page-indicator">
+                <span className="current-page">{currentPage + 1}</span>
+                <span className="separator">/</span>
+                <span className="total-pages">{totalPages}</span>
+              </div>
+
+              <button 
+                className="nav-button next-button"
+                onClick={goToNextPage}
+                disabled={currentPage === totalPages - 1 || isFlipping}
+                aria-label="Next page"
+              >
+                <span className="nav-text">Next</span>
+                <span className="nav-icon">▶</span>
+              </button>
+            </div>
+
+            <div className="keyboard-hint">
+              ← Use keyboard arrows to flip pages →
+            </div>
+          </>
+        )}
+
+        <div className="download-section">
+          <button 
+            className="download-button"
+            onClick={handleDownload}
+            aria-label="Download PDF catalog"
+          >
+            <span className="download-icon">📥</span>
+            <span>Download Full Catalog (PDF)</span>
+            <span className="download-icon">📄</span>
+          </button>
+          <p className="download-info">Complete TRIONE Mortise Catalogue 2025 • 169 pages</p>
+        </div>
       </div>
     </div>
   );
