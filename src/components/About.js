@@ -69,7 +69,7 @@ function About() {
         <div className="hero-overlay"></div>
         <div className="hero-pattern"></div>
         <div className="container hero-content">
-          <span className="hero-badge">Est. 2000 • Regd. 2018</span>
+        <span className="hero-badge" style={{ color: '#ffffff' }}>Est. 2000 • Regd. 2018</span>
           <h1 className="hero-title">
             <span className="hero-title-line">Crafting Excellence Since</span>
             <span className="hero-title-main">

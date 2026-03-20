@@ -123,7 +123,7 @@ function Product() {
         <div className="hero-overlay"></div>
         <div className="hero-pattern"></div>
         <div className="container hero-content">
-          <span className="hero-badge">Premium Hardware Collection</span>
+        <span className="hero-badge" style={{ color: '#ffffff' }}>Premium Hardware Collection</span>
           <h1 className="hero-title">
             <span className="hero-title-line">Explore Our</span>
             <span className="hero-title-main">

@@ -76,7 +76,7 @@ function Contact() {
         <div className="hero-overlay"></div>
         <div className="hero-pattern"></div>
         <div className="container hero-content">
-          <span className="hero-badge">Get in Touch</span>
+        <span className="hero-badge" style={{ color: '#ffffff' }}>Get in Touch</span>
           <h1 className="hero-title">
             <span className="hero-title-line">Connect with</span>
             <span className="hero-title-main">
