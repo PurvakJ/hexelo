@@ -1,4 +1,4 @@
-// components/Home.js - Updated with 10 featured products and Door Silencer removed
+// components/Home.js - Updated with 10 featured products and only 4 categories
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './Home.css';
@@ -229,40 +229,39 @@ function Home() {
   const getHardwareCategories = () => {
     const products = productsData.products;
     
-    // Get unique categories with their counts and first image
+    // Define the 4 categories we want to show
+    const selectedCategories = [
+      'Mortise Handles',
+      'Main Door handles',
+      'Magnet Door Holder',
+      'Brass Mortise Handles'
+    ];
+    
+    // Get only the selected categories with their counts and first image
     const categoryMap = new Map();
     
     products.forEach(product => {
-      if (!categoryMap.has(product.category)) {
-        categoryMap.set(product.category, {
-          name: product.category,
-          count: 1,
-          image: product.image
-        });
-      } else {
-        const cat = categoryMap.get(product.category);
-        cat.count += 1;
-        categoryMap.set(product.category, cat);
+      if (selectedCategories.includes(product.category)) {
+        if (!categoryMap.has(product.category)) {
+          categoryMap.set(product.category, {
+            name: product.category,
+            count: 1,
+            image: product.image
+          });
+        } else {
+          const cat = categoryMap.get(product.category);
+          cat.count += 1;
+          categoryMap.set(product.category, cat);
+        }
       }
     });
 
-    // Define icons for categories - Door Silencer is still shown in categories section
+    // Define icons for the selected categories
     const categoryIcons = {
       'Main Door handles': '🚪',
       'Mortise Handles': '🔐',
-      'Knobs': '🔘',
-      'Knocks': '🔨',
-      'Brass Dooms & Knockers': '🥇',
-      'Door silencer': '🔇',
-      'Buffers': '🛑',
       'Magnet Door Holder': '🧲',
-      'Mortise Locks': '🔒',
-      'Antique Brass': '🏺',
-      'Sofa Legs': '🪑',
-      'Brass Mortise Handles': '⚜️',
-      'Curtains Bracket': '🏷️',
-      'Door closer': '🚪',
-      'Telescopy channels': '📏'
+      'Brass Mortise Handles': '⚜️'
     };
 
     // Convert map to array and add icons
@@ -446,7 +445,7 @@ function Home() {
         </div>
       </section>
 
-      {/* Categories Section */}
+      {/* Categories Section - Now showing only 4 categories */}
       <section 
         ref={sectionRefs.categories} 
         className={`section categories-section ${visibleSections.categories ? 'slide-in' : ''}`}
@@ -460,7 +459,7 @@ function Home() {
             </p>
           </div>
 
-          <div className="categories-grid">
+          <div className="categories-grid" style={{ gridTemplateColumns: 'repeat(4, 1fr)' }}>
             {hardwareCategories.map((category, index) => (
               <div 
                 key={index} 

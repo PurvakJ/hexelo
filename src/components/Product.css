@@ -927,6 +927,9 @@
 }
 
 @media (max-width: 480px) {
+  .product-page{
+    margin-top: -100px;
+  }
   .products-grid-enhanced {
     grid-template-columns: 1fr;
   }

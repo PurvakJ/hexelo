@@ -767,6 +767,9 @@
   .phone-link {
     text-align: center;
   }
+  .contact{
+    margin-top: -100px;
+  }
 }
 
 /* Animations */

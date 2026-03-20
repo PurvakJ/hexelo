@@ -762,6 +762,9 @@
     .download-icon {
       font-size: 18px;
     }
+    .catalog-container{
+      margin-top: -50px;
+    }
   }
   
   /* Ensure desktop styles remain unchanged */

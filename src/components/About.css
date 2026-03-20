@@ -847,6 +847,9 @@
 }
 
 @media (max-width: 480px) {
+  .about{
+    margin-top: -100px;
+  }
   .partner-image-wrapper {
     height: 260px;
   }

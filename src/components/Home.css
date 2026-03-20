@@ -1925,6 +1925,9 @@
 }
 
 @media (max-width: 480px) {
+  .home{
+    margin-top: -100px;
+  }
   .products-grid {
     grid-template-columns: 1fr !important;
   }
